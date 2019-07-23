@@ -12,4 +12,8 @@
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.8.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\HADotNet\HADotNet.Core.csproj" />
+  </ItemGroup>
+
 </Project>
