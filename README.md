@@ -1,6 +1,6 @@
 ﻿# HADotNet
 
-A simple, straighforward .NET Standard library for the Home Assistant API.
+A simple, straighforward .NET Standard library for the [Home Assistant](https://github.com/home-assistant/home-assistant) API.
 
 ## Features
 
@@ -12,7 +12,7 @@ A simple, straighforward .NET Standard library for the Home Assistant API.
 
 ### From NuGet (Recommended)
 
-Install **HADotNet.Core** from NuGet:
+Install **[HADotNet.Core](https://www.nuget.org/packages/HADotNet.Core/)** from NuGet:
 
 `Install-Package HADotNet.Core`
 
