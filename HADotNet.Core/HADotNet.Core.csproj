@@ -8,7 +8,7 @@
     <Authors>https://github.com/qJake</Authors>
     <Description>A Home Assistant library for .NET Standard that allows access to the Home Assistant external API.</Description>
     <NeutralLanguage>en-US</NeutralLanguage>
-    <Summary>A linrary for working with the Home Asstant API.</Summary>
+    <Summary>A library for working with the Home Asstant API.</Summary>
     <PackageTags>home-assistant external api library</PackageTags>
     <Title>HADotNet Core Library</Title>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
