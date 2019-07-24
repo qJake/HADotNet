@@ -9,9 +9,9 @@ namespace HADotNet.Core.Models
     public class ConfigurationObject
     {
         /// <summary>
-        /// Gets the list of components loaded, in the [domain] or [domain].[component] format.
+        /// Gets or sets the list of components loaded, in the [domain] or [domain].[component] format.
         /// </summary>
-        public List<string> Components { get; internal set; }
+        public List<string> Components { get; set; }
 
         /// <summary>
         /// Gets or sets the relative path to the config directory (usually "/config").
@@ -53,21 +53,25 @@ namespace HADotNet.Core.Models
         public string TimeZone { get; set; }
 
         /// <summary>
-        /// Gets information about the various measurement unit preferences.
+        /// Gets or sets information about the various measurement unit preferences.
         /// </summary>
         [JsonProperty("unit_system")]
-        public UnitSystemObject UnitSystem { get; internal set; }
+        public UnitSystemObject UnitSystem { get; set; }
 
         /// <summary>
-        /// Gets the version of Home Assistant that is currently running (e.g. 0.96.1).
+        /// Gets or sets the version of Home Assistant that is currently running (e.g. 0.96.1).
         /// </summary>
-        public string Version { get; internal set; }
+        public string Version { get; set; }
 
         /// <summary>
-        /// Gets a list of relative paths that are approved to be exposed externally (e.g. /config/www).
+        /// Gets or sets a list of relative paths that are approved to be exposed externally (e.g. /config/www).
         /// </summary>
         [JsonProperty("whitelist_external_dirs")]
-        public List<string> WhitelistedExternalDirs { get; internal set; }
-
+        public List<string> WhitelistedExternalDirs { get; set; }
+        
+        /// <summary>
+        /// Gets a string representation of this object.
+        /// </summary>
+        public override string ToString() => $"Configuration object for instance: {LocationName}";
     }
 }

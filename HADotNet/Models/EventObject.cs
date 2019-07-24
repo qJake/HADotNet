@@ -22,5 +22,10 @@ namespace HADotNet.Core.Models
         /// </summary>
         [JsonProperty("listener_count")]
         public int ListenerCount { get; set; }
+
+        /// <summary>
+        /// Gets a string representation of this object.
+        /// </summary>
+        public override string ToString() => $"Event: {Event} ({ListenerCount} listener(s))";
     }
 }

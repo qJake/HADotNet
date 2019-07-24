@@ -21,6 +21,6 @@ namespace HADotNet.Core.Clients
         /// Retrieves the current Home Assistant configuration object.
         /// </summary>
         /// <returns>A <see cref="ConfigurationObject" /> representing the current Home Assistant configuration.</returns>
-        public async Task<List<EventObject>> GetEventList() => await Get<List<EventObject>>("/api/events");
+        public async Task<List<EventObject>> GetEvents() => await Get<List<EventObject>>("/api/events");
     }
 }

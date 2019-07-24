@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Tests
 {
-    public class EventTests
+    public class ErrorLogTests
     {
         private Uri Instance { get; set; }
         private string ApiKey { get; set; }
@@ -21,14 +21,17 @@ namespace Tests
         }
 
         [Test]
-        public async Task ShouldRetrieveEventList()
+        public async Task ShouldRetrieveErrorLogList()
         {
-            var client = ClientFactory.GetClient<EventClient>();
+            var client = ClientFactory.GetClient<ErrorLogClient>();
 
-            var events = await client.GetEvents();
+            var log = await client.GetErrorLogEntries();
 
-            Assert.IsNotNull(events);
-            Assert.AreNotEqual(0, events.Count);
+            Assert.IsNotNull(log);
+            Assert.AreNotEqual(0, log.LogEntries.Count);
+            Assert.AreNotEqual(0, log.Errors.Count);
+            Assert.AreNotEqual(0, log.Warnings.Count);
+            Assert.AreEqual(7, log[7].Count);
         }
     }
 }

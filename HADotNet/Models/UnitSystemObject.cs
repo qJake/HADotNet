@@ -29,6 +29,5 @@
         /// The volume unit (e.g. gal, L).
         /// </summary>
         public string Volume { get; set; }
-
     }
 }

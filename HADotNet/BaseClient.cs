@@ -30,23 +30,39 @@ namespace HADotNet.Core
         /// <typeparam name="T">The type of data to deserialize and return.</typeparam>
         /// <param name="path">The relative API endpoint path.</param>
         /// <returns>The deserialized data of type <typeparamref name="T" />.</returns>
-        protected async Task<T> Get<T>(string path)
+        protected async Task<T> Get<T>(string path) where T : class
         {
             var req = new RestRequest(path);
             var resp = await Client.ExecuteGetTaskAsync(req);
 
             if (!string.IsNullOrWhiteSpace(resp.Content) && (resp.StatusCode == HttpStatusCode.OK || resp.StatusCode == HttpStatusCode.Created))
             {
+                // Weird case for strings - return as-is
+                if (typeof(T).IsAssignableFrom(typeof(string)))
+                {
+                    return resp.Content as T;
+                }
+
                 return JsonConvert.DeserializeObject<T>(resp.Content);
             }
 
             throw new Exception($"Unexpected response code {(int)resp.StatusCode} from Home Assistant API endpoint {path}.");
         }
 
-        protected async Task<T> Post<T>(string path, object body)
+        protected async Task<T> Post<T>(string path, object body, bool isRawBody = false)
         {
             var req = new RestRequest(path);
-            req.AddJsonBody(body);
+            if (body != null)
+            {
+                if (isRawBody)
+                {
+                    req.AddParameter("application/json", body.ToString(), ParameterType.RequestBody);
+                }
+                else
+                {
+                    req.AddJsonBody(body);
+                }
+            }
             var resp = await Client.ExecutePostTaskAsync(req);
 
             if (!string.IsNullOrWhiteSpace(resp.Content) && (resp.StatusCode == HttpStatusCode.OK || resp.StatusCode == HttpStatusCode.Created))
