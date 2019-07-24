@@ -90,3 +90,17 @@ var resultingState = await serviceClient.CallService("light.turn_on", new { enti
 // Or
 var resultingState = await serviceClient.CallService("light.turn_on", @"{""entity_id"":""light.my_light""}");
 ```
+
+## Testing
+
+To run the unit tests, you must first set two environment variables:
+
+* `HADotNet:Tests:Instance` = `https://my-home-assistant-url/`
+* `HADotNet:Tests:ApiKey` = `AbCdEf0123456789...`
+
+## Collaborating
+
+Fork the project, make some changes, and submit a pull request!
+
+Be sure to follow the same coding style (generally, the standard Microsoft C# coding 
+guidelines) and comment all publicly-visible types and members with XMLDoc comments.
