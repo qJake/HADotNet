@@ -1,14 +1,15 @@
-
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HADotNet.Core", "HADotNet\HADotNet.Core.csproj", "{43B94E76-1CC3-4969-B028-43C1DFDD47D1}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HADotNet.Core.Tests", "HADotNet.Core.Tests\HADotNet.Core.Tests.csproj", "{6252F12E-1C91-4644-A6E1-6A21476D0877}"
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.28922.388
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HADotNet.Core.Tests", "HADotNet.Core.Tests\HADotNet.Core.Tests.csproj", "{6252F12E-1C91-4644-A6E1-6A21476D0877}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{63BB834E-E432-4C11-B7EB-2C1391F57139}"
 	ProjectSection(SolutionItems) = preProject
 		README.md = README.md
 	EndProjectSection
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HADotNet.Core", "HADotNet.Core\HADotNet.Core.csproj", "{7134B62B-2B16-4549-955D-FDB6C079B64D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -16,13 +17,19 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{43B94E76-1CC3-4969-B028-43C1DFDD47D1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{43B94E76-1CC3-4969-B028-43C1DFDD47D1}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{43B94E76-1CC3-4969-B028-43C1DFDD47D1}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{43B94E76-1CC3-4969-B028-43C1DFDD47D1}.Release|Any CPU.Build.0 = Release|Any CPU
 		{6252F12E-1C91-4644-A6E1-6A21476D0877}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{6252F12E-1C91-4644-A6E1-6A21476D0877}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6252F12E-1C91-4644-A6E1-6A21476D0877}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6252F12E-1C91-4644-A6E1-6A21476D0877}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7134B62B-2B16-4549-955D-FDB6C079B64D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7134B62B-2B16-4549-955D-FDB6C079B64D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7134B62B-2B16-4549-955D-FDB6C079B64D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7134B62B-2B16-4549-955D-FDB6C079B64D}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {14266C8C-5F44-4443-BC21-21AAC074EE9A}
 	EndGlobalSection
 EndGlobal
