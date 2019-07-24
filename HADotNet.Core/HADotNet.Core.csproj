@@ -15,8 +15,16 @@
     <Version>0.1.0</Version>
     <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
     <PackageProjectUrl>https://github.com/qJake/HADotNet</PackageProjectUrl>
-    <RepositoryUrl>https://github.com/qJake/HADotNet</RepositoryUrl>
+    <RepositoryUrl>https://github.com/qJake/HADotNet.git</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DocumentationFile>bin\Release\HADotNet.Core.xml</DocumentationFile>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DocumentationFile>bin\Debug\HADotNet.Core.xml</DocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>
