@@ -91,6 +91,21 @@ var resultingState = await serviceClient.CallService("light.turn_on", new { enti
 var resultingState = await serviceClient.CallService("light.turn_on", @"{""entity_id"":""light.my_light""}");
 ```
 
+### Retrieving History for an Entity
+
+Get a `HistoryClient` and then call `GetHistory(entityId)`:
+
+```csharp
+var historyClient = ClientFactory.GetClient<HistoryClient>();
+var historyList = await historyClient.GetHistory("sun.sun");
+
+// historyList.EntityId: "sun.sun"
+// historyList[0].State: "above_horizon"
+// historyList[0].LastUpdated: 2019-07-25 07:25:00
+// historyList[1].State: "below_horizon"
+// historyList[1].LastUpdated: 2019-07-25 20:06:00
+```
+
 ## Testing
 
 To run the unit tests, you must first set two environment variables:
