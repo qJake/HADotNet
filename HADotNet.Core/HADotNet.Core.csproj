@@ -12,11 +12,12 @@
     <PackageTags>home-assistant external api library</PackageTags>
     <Title>HADotNet Core Library</Title>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <Version>0.1.1</Version>
+    <Version>0.2.0</Version>
     <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
     <PackageProjectUrl>https://github.com/qJake/HADotNet</PackageProjectUrl>
     <RepositoryUrl>https://github.com/qJake/HADotNet.git</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
+    <PackageReleaseNotes></PackageReleaseNotes>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
