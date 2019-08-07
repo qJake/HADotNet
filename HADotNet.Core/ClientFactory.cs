@@ -9,7 +9,11 @@ namespace HADotNet.Core
     {
         private static Uri InstanceAddress { get; set; }
         private static string ApiKey { get; set; }
-        internal static bool IsInitialized { get; set; }
+
+        /// <summary>
+        /// Gets whether or not the Client Factory has been initialized.
+        /// </summary>
+        public static bool IsInitialized { get; internal set; }
 
         /// <summary>
         /// Initializes the client factory with the specified <paramref name="instanceAddress" /> and <paramref name="apiKey" /> which are forwarded to clients instantiated from this factory.
