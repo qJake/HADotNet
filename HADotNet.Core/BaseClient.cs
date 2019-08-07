@@ -49,7 +49,7 @@ namespace HADotNet.Core
             throw new Exception($"Unexpected response code {(int)resp.StatusCode} from Home Assistant API endpoint {path}.");
         }
 
-        protected async Task<T> Post<T>(string path, object body, bool isRawBody = false)
+        protected async Task<T> Post<T>(string path, object body, bool isRawBody = false) where T : class
         {
             var req = new RestRequest(path);
             if (body != null)
@@ -67,6 +67,12 @@ namespace HADotNet.Core
 
             if (!string.IsNullOrWhiteSpace(resp.Content) && (resp.StatusCode == HttpStatusCode.OK || resp.StatusCode == HttpStatusCode.Created))
             {
+                // Weird case for strings - return as-is
+                if (typeof(T).IsAssignableFrom(typeof(string)))
+                {
+                    return resp.Content as T;
+                }
+
                 return JsonConvert.DeserializeObject<T>(resp.Content);
             }
 

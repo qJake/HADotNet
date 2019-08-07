@@ -10,7 +10,7 @@ namespace HADotNet.Core.Clients
     public sealed class DiscoveryClient : BaseClient
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="ConfigClient" />.
+        /// Initializes a new instance of the <see cref="DiscoveryClient" />.
         /// </summary>
         /// <param name="instance">The Home Assistant base instance URL.</param>
         /// <param name="apiKey">The Home Assistant long-lived access token.</param>

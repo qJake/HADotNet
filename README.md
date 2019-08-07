@@ -46,6 +46,15 @@ var config = await configClient.GetConfiguration();
 // config.Version: 0.96.1
 ```
 
+### Retrieving All Entities
+
+Get an `EntityClient` and then call `GetEntities()`:
+
+```csharp
+var entityClient = ClientFactory.GetClient<EntityClient>();
+var entityList = await entityClient.GetEntities();
+```
+
 ### Retrieving All Entity States
 
 Get a `StatesClient` and then call `GetStates()`:
@@ -104,6 +113,17 @@ var historyList = await historyClient.GetHistory("sun.sun");
 // historyList[0].LastUpdated: 2019-07-25 07:25:00
 // historyList[1].State: "below_horizon"
 // historyList[1].LastUpdated: 2019-07-25 20:06:00
+```
+
+### Rendering a Template
+
+Get a `TemplateClient` and then call `RenderTemplate(templateBody)`:
+
+```csharp
+var templateClient = ClientFactory.GetClient<TemplateClient>();
+var myRenderedTemplate = await templateClient.RenderTemplate("The sun is {{ states('sun.sun') }}");
+
+// myRenderedTemplate: The sun is above_horizon
 ```
 
 ## Testing

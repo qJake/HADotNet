@@ -11,7 +11,7 @@ namespace HADotNet.Core.Clients
     public sealed class EventClient : BaseClient
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="ConfigClient" />.
+        /// Initializes a new instance of the <see cref="EventClient" />.
         /// </summary>
         /// <param name="instance">The Home Assistant base instance URL.</param>
         /// <param name="apiKey">The Home Assistant long-lived access token.</param>

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 namespace HADotNet.Core.Clients
 {
     /// <summary>
-    /// Provides access to the service API for retrieving information about services and calling services.
+    /// Provides access to the states API for retrieving information about the current state of entities.
     /// </summary>
     public sealed class StatesClient : BaseClient
     {

@@ -11,7 +11,7 @@ namespace HADotNet.Core.Clients
     public sealed class ErrorLogClient : BaseClient
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="StatesClient" />.
+        /// Initializes a new instance of the <see cref="ErrorLogClient" />.
         /// </summary>
         /// <param name="instance">The Home Assistant base instance URL.</param>
         /// <param name="apiKey">The Home Assistant long-lived access token.</param>
