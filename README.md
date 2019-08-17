@@ -55,6 +55,15 @@ var entityClient = ClientFactory.GetClient<EntityClient>();
 var entityList = await entityClient.GetEntities();
 ```
 
+### Retrieving Entities By Domain
+
+Get an `EntityClient` and then call `GetEntities("domainName")`:
+
+```csharp
+var entityClient = ClientFactory.GetClient<EntityClient>();
+var filteredEntityList = await entityClient.GetEntities("light");
+```
+
 ### Retrieving All Entity States
 
 Get a `StatesClient` and then call `GetStates()`:
