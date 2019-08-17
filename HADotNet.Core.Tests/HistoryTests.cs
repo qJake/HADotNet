@@ -50,7 +50,7 @@ namespace Tests
         {
             var client = ClientFactory.GetClient<HistoryClient>();
 
-            var allHistory = await client.GetHistory(DateTimeOffset.Now.Subtract(TimeSpan.FromDays(2)));
+            var allHistory = await client.GetHistory(new DateTimeOffset(2019, 7, 20, 0, 0, 0, TimeSpan.Zero));
 
             Assert.IsNotNull(allHistory);
             Assert.IsNotEmpty(allHistory[0].EntityId);
@@ -63,7 +63,7 @@ namespace Tests
         {
             var client = ClientFactory.GetClient<HistoryClient>();
 
-            var allHistory = await client.GetHistory(DateTimeOffset.Now.Subtract(TimeSpan.FromDays(2)), DateTimeOffset.Now.Subtract(new TimeSpan(1, 12, 0, 0)));
+            var allHistory = await client.GetHistory(new DateTimeOffset(2019, 7, 20, 0, 0, 0, TimeSpan.Zero), new DateTimeOffset(2019, 7, 20, 15, 0, 0, TimeSpan.Zero));
 
             Assert.IsNotNull(allHistory);
             Assert.IsNotEmpty(allHistory[0].EntityId);
@@ -76,7 +76,7 @@ namespace Tests
         {
             var client = ClientFactory.GetClient<HistoryClient>();
 
-            var allHistory = await client.GetHistory(DateTimeOffset.Now.Subtract(TimeSpan.FromDays(2)), TimeSpan.FromHours(18));
+            var allHistory = await client.GetHistory(new DateTimeOffset(2019, 7, 20, 0, 0, 0, TimeSpan.Zero), TimeSpan.FromHours(18));
 
             Assert.IsNotNull(allHistory);
             Assert.IsNotEmpty(allHistory[0].EntityId);
@@ -89,7 +89,7 @@ namespace Tests
         {
             var client = ClientFactory.GetClient<HistoryClient>();
 
-            var history = await client.GetHistory("group.family_room_lights", DateTimeOffset.Now.Subtract(TimeSpan.FromDays(2)), DateTimeOffset.Now.Subtract(new TimeSpan(1, 12, 0, 0)));
+            var history = await client.GetHistory("group.family_room_lights", new DateTimeOffset(2019, 7, 20, 0, 0, 0, TimeSpan.Zero), new DateTimeOffset(2019, 7, 25, 0, 0, 0, TimeSpan.Zero));
 
             Assert.IsNotNull(history);
             Assert.IsNotEmpty(history.EntityId);
