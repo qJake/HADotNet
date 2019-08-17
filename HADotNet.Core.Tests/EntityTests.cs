@@ -31,5 +31,16 @@ namespace Tests
             Assert.IsNotNull(entities);
             Assert.AreNotEqual(0, entities.Count());
         }
+
+        [Test]
+        public async Task ShouldRetrieveEntityListWithDomainFilter()
+        {
+            var client = ClientFactory.GetClient<EntityClient>();
+
+            var entities = await client.GetEntities("light");
+
+            Assert.IsNotNull(entities);
+            Assert.AreNotEqual(0, entities.Count());
+        }
     }
 }
