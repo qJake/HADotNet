@@ -28,7 +28,7 @@ namespace HADotNet.Core.Clients
         /// </summary>
         /// <param name="domain">The domain of the service (e.g. "light").</param>
         /// <param name="service">The name of the service (e.g. "turn_on").</param>
-        /// <param name="fields">Optional. An object representing the fields/parameters to pass to the service. Can be an anonymous type, or a <see cref="Dictionary{string, object}" />.</param>
+        /// <param name="fields">Optional. An object representing the fields/parameters to pass to the service. Can be an anonymous type, or a <see cref="Dictionary{TKey, TValue}">Dictionary&lt;string, object&gt;</see>.</param>
         /// <returns></returns>
         public async Task<List<StateObject>> CallService(string domain, string service, object fields = null) => await Post<List<StateObject>>($"/api/services/{domain}/{service}", fields);
 
@@ -36,7 +36,7 @@ namespace HADotNet.Core.Clients
         /// Calls a service using the given fully-qualified <paramref name="serviceName" />, and optionally, <paramref name="fields" />.
         /// </summary>
         /// <param name="serviceName">The fully-qualified service name (e.g. "light.turn_on").</param>
-        /// <param name="fields">Optional. An object representing the fields/parameters to pass to the service. Can be an anonymous type, or a <see cref="Dictionary{string, object}" />.</param>
+        /// <param name="fields">Optional. An object representing the fields/parameters to pass to the service. Can be an anonymous type, or a <see cref="Dictionary{TKey, TValue}">Dictionary&lt;string, object&gt;</see>.</param>
         /// <returns></returns>
         public async Task<List<StateObject>> CallService(string serviceName, object fields = null) => await Post<List<StateObject>>($"/api/services/{serviceName.Split('.')[0]}/{serviceName.Split('.')[1]}", fields);
 

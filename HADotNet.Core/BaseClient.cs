@@ -11,6 +11,9 @@ namespace HADotNet.Core
     /// </summary>
     public abstract class BaseClient
     {
+        /// <summary>
+        /// Gets or sets the Rest client.
+        /// </summary>
         protected RestClient Client { get; set; }
 
         /// <summary>
@@ -49,6 +52,14 @@ namespace HADotNet.Core
             throw new Exception($"Unexpected response code {(int)resp.StatusCode} from Home Assistant API endpoint {path}.");
         }
 
+        /// <summary>
+        /// Performs a POST request on the specified path.
+        /// </summary>
+        /// <typeparam name="T">The type of object expected back.</typeparam>
+        /// <param name="path">The path to post to.</param>
+        /// <param name="body">The body contents to serialize and include.</param>
+        /// <param name="isRawBody"><see langword="true" /> if the body should be interpereted as a pre-built JSON string, or <see langword="false" /> if it should be serialized.</param>
+        /// <returns></returns>
         protected async Task<T> Post<T>(string path, object body, bool isRawBody = false) where T : class
         {
             var req = new RestRequest(path);
