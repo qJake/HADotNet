@@ -35,6 +35,16 @@ namespace HADotNet.Core
         public static void Initialize(string instanceAddress, string apiKey) => Initialize(new Uri(instanceAddress), apiKey);
 
         /// <summary>
+        /// Resets the Client Factory to its initial state (not initialized).
+        /// </summary>
+        public static void Reset()
+        {
+            InstanceAddress = null;
+            ApiKey = null;
+            IsInitialized = false;
+        }
+
+        /// <summary>
         /// Retrieves a new instance of a client by type, preconfigured with the same <see cref="InstanceAddress" /> and <see cref="ApiKey" /> as this <see cref="ClientFactory" /> (from the last time <see cref="Initialize(Uri, string)" /> was called).
         /// </summary>
         /// <typeparam name="TClient">The type of client to get.</typeparam>
