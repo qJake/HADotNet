@@ -95,6 +95,15 @@ var serviceClient = ClientFactory.GetClient<ServiceClient>();
 var services = await serviceClient.GetServices();
 ```
 
+### Retrieving Calendar Events
+
+Get a `CalendarClient` and then call `GetEvents(calEntity)`:
+
+```csharp
+var calClient = ClientFactory.GetClient<CalendarClient>();
+var myEvents = await calClient.GetEvents("calendar.my_calendar");
+```
+
 ### Calling a Service
 
 Get a `ServiceClient` and then call `CallService()`:
