@@ -146,6 +146,11 @@ namespace HADotNet.Core.Models
     public class CalendarDateTimeObject
     {
         /// <summary>
+        /// The date of the event, if the event is all-day.
+        /// </summary>
+        public DateTime? Date { get; set; }
+
+        /// <summary>
         /// The date/time of the event, in local time (with an offset).
         /// </summary>
         public DateTime? DateTime { get; set; }
