@@ -1,5 +1,6 @@
 ﻿# HADotNet
 
+![Nuget](https://img.shields.io/nuget/v/HADotNet.Core?logo=nuget) 
 ![ci-badge](https://github.com/qJake/HADotNet/workflows/CI%20Build/badge.svg)
 
 A simple, straighforward .NET Standard library for the [Home Assistant](https://github.com/home-assistant/home-assistant) API.
