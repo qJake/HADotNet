@@ -1,6 +1,6 @@
 ﻿# HADotNet
 
-![Nuget](https://img.shields.io/nuget/v/HADotNet.Core?logo=nuget) 
+[![Nuget](https://img.shields.io/nuget/v/HADotNet.Core?logo=nuget)](https://www.nuget.org/packages/HADotNet.Core/)
 ![ci-badge](https://github.com/qJake/HADotNet/workflows/CI%20Build/badge.svg)
 
 A simple, straighforward .NET Standard library for the [Home Assistant](https://github.com/home-assistant/home-assistant) API.
@@ -15,7 +15,7 @@ A simple, straighforward .NET Standard library for the [Home Assistant](https://
 
 ### From NuGet (Recommended)
 
-![Nuget](https://img.shields.io/nuget/dt/HADotNet.Core?color=%23004880&label=NuGet%20Downloads&logo=nuget)
+[![Nuget](https://img.shields.io/nuget/dt/HADotNet.Core?color=%23004880&label=NuGet%20Downloads&logo=nuget)](https://www.nuget.org/packages/HADotNet.Core/)
 
 Install **[HADotNet.Core](https://www.nuget.org/packages/HADotNet.Core/)** from NuGet:
 
