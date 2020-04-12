@@ -57,5 +57,12 @@ namespace HADotNet.Core.Clients
         /// <returns></returns>
         public async Task<List<StateObject>> CallService(string serviceName, string fields = null) => await Post<List<StateObject>>($"/api/services/{serviceName.Split('.')[0]}/{serviceName.Split('.')[1]}", fields, true);
 
+        /// <summary>
+        /// Calls a service using the given fully-qualified <paramref name="serviceName" /> and one or more <paramref name="entityIds" />.
+        /// </summary>
+        /// <param name="serviceName">The fully-qualified service name (e.g. "light.turn_on").</param>
+        /// <param name="entityIds">The entity IDs to pass to the service (using the <c>entity_ids</c> parameter).</param>
+        /// <returns></returns>
+        public async Task<List<StateObject>> CallServiceForEntities(string serviceName, params string[] entityIds) => await Post<List<StateObject>>($"/api/services/{serviceName.Split('.')[0]}/{serviceName.Split('.')[1]}", new { entity_id = entityIds });
     }
 }

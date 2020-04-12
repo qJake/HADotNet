@@ -1,4 +1,7 @@
-﻿namespace HADotNet.Core.Models
+﻿using HADotNet.Core.Utility;
+using Newtonsoft.Json;
+
+namespace HADotNet.Core.Models
 {
     /// <summary>
     /// Represents a signle field in a service call.
@@ -13,6 +16,7 @@
         /// <summary>
         /// Gets or sets the example text for this field (may be <see langword="null" />).
         /// </summary>
+        [JsonConverter(typeof(ServiceExampleDeserializer))]
         public string Example { get; set; }
     }
 }

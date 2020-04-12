@@ -2,6 +2,7 @@ using HADotNet.Core;
 using HADotNet.Core.Clients;
 using NUnit.Framework;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Tests
@@ -51,6 +52,34 @@ namespace Tests
 
             Assert.IsNotNull(state);
             Assert.AreEqual("Sun", state.GetAttributeValue<string>("friendly_name"));
+        }
+
+        [Test]
+        public async Task ShouldSetState()
+        {
+            var client = ClientFactory.GetClient<StatesClient>();
+
+            var state = await client.SetState("sensor.hadotnet_test_entity", "testing");
+
+            Assert.IsNotNull(state);
+            Assert.AreEqual("testing", state.State);
+        }
+
+        [Test]
+        public async Task ShouldSetStateWithAttributes()
+        {
+            var client = ClientFactory.GetClient<StatesClient>();
+
+            var state = await client.SetState("sensor.hadotnet_test_entity", "testing",
+                new Dictionary<string, object>
+                {
+                    ["source"] = "HADotNet",
+                    ["friendly_name"] = "HADotNet Unit Test Value",
+                    ["icon"] = "mdi:language-csharp"
+                });
+
+            Assert.IsNotNull(state);
+            Assert.AreEqual("testing", state.State);
         }
     }
 }

@@ -43,5 +43,31 @@ namespace Tests
             // Uncomment if you are actually running a test against a real entity that will return state data
             //Assert.AreNotEqual(0, returnState.Count);
         }
+
+        [Test]
+        public async Task ShouldCallServiceWithEntityId()
+        {
+            var client = ClientFactory.GetClient<ServiceClient>();
+
+            var returnState = await client.CallServiceForEntities("light.turn_on", "light.my_light_1");
+
+            Assert.IsNotNull(returnState);
+
+            // Uncomment if you are actually running a test against a real entity that will return state data
+            //Assert.AreNotEqual(0, returnState.Count);
+        }
+
+        [Test]
+        public async Task ShouldCallServiceWithEntityIds()
+        {
+            var client = ClientFactory.GetClient<ServiceClient>();
+
+            var returnState = await client.CallServiceForEntities("light.turn_on", "light.my_light_1", "light.my_light_2");
+
+            Assert.IsNotNull(returnState);
+
+            // Uncomment if you are actually running a test against a real entity that will return state data
+            //Assert.AreNotEqual(0, returnState.Count);
+        }
     }
 }

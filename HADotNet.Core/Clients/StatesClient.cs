@@ -32,9 +32,9 @@ namespace HADotNet.Core.Clients
         /// <summary>
         /// Sets the state of an entity. If the entity does not exist, it will be created.
         /// </summary>
-        /// <param name="entityId">The id of the state to change</param>
-        /// <param name="newState">The new state value</param>
-        /// <param name="setAttributes">The attributes to set.</param>
+        /// <param name="entityId">The entity ID of the state to change.</param>
+        /// <param name="newState">The new state value.</param>
+        /// <param name="setAttributes">Optional. The attributes to set.</param>
         /// <returns>A <see cref="StateObject" /> representing the updated state of the updated <paramref name="entityId" />.</returns>
         public async Task<StateObject> SetState(string entityId, string newState, Dictionary<string, object> setAttributes = null) => await Post<StateObject>($"/api/states/{entityId}", Newtonsoft.Json.JsonConvert.SerializeObject(new { state = newState, attributes = setAttributes }));
 
