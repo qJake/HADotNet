@@ -86,6 +86,8 @@ namespace Tests
             var automation = new AutomationObject
             {
                 Id = AutomationId,
+                Alias = $"test_automation_{AutomationId}",
+                Description = $"This is an updated test automation {DateTime.Now.ToLongDateString()}",
                 Actions = new List<Dictionary<string, object>>()
                 {
                     new Dictionary<string, object>()
