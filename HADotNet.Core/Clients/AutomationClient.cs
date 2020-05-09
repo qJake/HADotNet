@@ -22,7 +22,7 @@ namespace HADotNet.Core.Clients
         /// </summary>
         /// <param name="automation">The <see cref="AutomationObject"/>.</param>
         /// <returns>The <see cref="AutomationResultObject"/>.</returns>
-        public async Task<AutomationResultObject> Create(AutomationObject automation) => await Post<AutomationResultObject>($"/api/config/automation/config/{automation.Id}", JsonConvert.SerializeObject(automation));
+        public async Task<AutomationResultObject> Create(AutomationObject automation) => await Post<AutomationResultObject>($"/api/config/automation/config/{automation.Id}", automation);
 
         /// <summary>
         /// Read the <see cref="AutomationObject"/>.
