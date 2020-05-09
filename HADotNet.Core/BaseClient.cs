@@ -36,7 +36,7 @@ namespace HADotNet.Core
         protected async Task<T> Get<T>(string path) where T : class
         {
             var req = new RestRequest(path);
-            var resp = await Client.ExecuteGetTaskAsync(req);
+            var resp = await Client.ExecuteGetAsync(req);
 
             if (!string.IsNullOrWhiteSpace(resp.Content) && (resp.StatusCode == HttpStatusCode.OK || resp.StatusCode == HttpStatusCode.Created))
             {
@@ -71,10 +71,10 @@ namespace HADotNet.Core
                 }
                 else
                 {
-                    req.AddJsonBody(body);
+                    req.AddParameter("application/json", JsonConvert.SerializeObject(body), ParameterType.RequestBody);
                 }
             }
-            var resp = await Client.ExecutePostTaskAsync(req);
+            var resp = await Client.ExecutePostAsync(req);
 
             if (!string.IsNullOrWhiteSpace(resp.Content) && (resp.StatusCode == HttpStatusCode.OK || resp.StatusCode == HttpStatusCode.Created))
             {
@@ -100,7 +100,7 @@ namespace HADotNet.Core
         {
             var req = new RestRequest(path, Method.DELETE);
 
-            var resp = await Client.ExecuteTaskAsync(req);
+            var resp = await Client.ExecuteAsync(req);
 
             if (!string.IsNullOrWhiteSpace(resp.Content) && (resp.StatusCode == HttpStatusCode.OK || resp.StatusCode == HttpStatusCode.NoContent))
             {
@@ -124,7 +124,7 @@ namespace HADotNet.Core
         {
             var req = new RestRequest(path, Method.DELETE);
 
-            var resp = await Client.ExecuteTaskAsync(req);
+            var resp = await Client.ExecuteAsync(req);
 
             if (!(resp.StatusCode == HttpStatusCode.OK || resp.StatusCode == HttpStatusCode.NoContent))
             {
