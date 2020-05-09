@@ -36,7 +36,7 @@ namespace HADotNet.Core.Clients
         /// </summary>
         /// <param name="automation">The <see cref="AutomationObject"/>.</param>
         /// <returns>The <see cref="AutomationResultObject"/>.</returns>
-        public async Task<AutomationResultObject> Update(AutomationObject automation) => await this.Create(automation);
+        public async Task<AutomationResultObject> Update(AutomationObject automation) => await Create(automation);
 
         /// <summary>
         /// Delete the <see cref="AutomationObject"/>.
