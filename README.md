@@ -3,6 +3,8 @@
 [![Nuget](https://img.shields.io/nuget/v/HADotNet.Core?logo=nuget)](https://www.nuget.org/packages/HADotNet.Core/)
 ![ci-badge](https://github.com/qJake/HADotNet/workflows/CI%20Build/badge.svg)
 
+[![Buy me a coffee](https://raw.githubusercontent.com/qJake/HADotNet.CommandCenter/master/Assets/bmac.png)](https://www.buymeacoffee.com/qJake)
+
 A simple, straighforward .NET Standard library for the [Home Assistant](https://github.com/home-assistant/home-assistant) API.
 
 ## Features
