@@ -3,7 +3,6 @@ using System.Net;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using RestSharp;
-using RestSharp.Serializers.NewtonsoftJson;
 
 namespace HADotNet.Core
 {
@@ -25,7 +24,6 @@ namespace HADotNet.Core
         protected BaseClient(Uri instance, string apiKey)
         {
             Client = new RestClient(instance);
-            Client.UseNewtonsoftJson();
             Client.AddDefaultHeader("Authorization", $"Bearer {apiKey}");
         }
 
@@ -104,7 +102,7 @@ namespace HADotNet.Core
 
             var resp = await Client.ExecuteTaskAsync(req);
 
-            if (!string.IsNullOrWhiteSpace(resp.Content) && (resp.StatusCode == HttpStatusCode.OK || resp.StatusCode == HttpStatusCode.Created))
+            if (!string.IsNullOrWhiteSpace(resp.Content) && (resp.StatusCode == HttpStatusCode.OK || resp.StatusCode == HttpStatusCode.NoContent))
             {
                 // Weird case for strings - return as-is
                 if (typeof(T).IsAssignableFrom(typeof(string)))
@@ -116,6 +114,22 @@ namespace HADotNet.Core
             }
 
             throw new Exception($"Unexpected response code {(int)resp.StatusCode} from Home Assistant API endpoint {path}.");
+        }
+
+        /// <summary>
+        /// Performs a DELETE request on the specified path.
+        /// </summary>
+        /// <param name="path">The relative API endpoint path.</param>
+        protected async Task Delete(string path)
+        {
+            var req = new RestRequest(path, Method.DELETE);
+
+            var resp = await Client.ExecuteTaskAsync(req);
+
+            if (!(resp.StatusCode == HttpStatusCode.OK || resp.StatusCode == HttpStatusCode.NoContent))
+            {
+                throw new Exception($"Unexpected response code {(int)resp.StatusCode} from Home Assistant API endpoint {path}.");
+            }
         }
     }
 }
