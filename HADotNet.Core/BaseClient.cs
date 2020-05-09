@@ -1,8 +1,8 @@
-﻿using Newtonsoft.Json;
-using RestSharp;
-using System;
+﻿using System;
 using System.Net;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
+using RestSharp;
 
 namespace HADotNet.Core
 {
@@ -88,6 +88,48 @@ namespace HADotNet.Core
             }
 
             throw new Exception($"Unexpected response code {(int)resp.StatusCode} from Home Assistant API endpoint {path}.");
+        }
+
+        /// <summary>
+        /// Performs a DELETE request on the specified path.
+        /// </summary>
+        /// <typeparam name="T">The type of data to deserialize and return.</typeparam>
+        /// <param name="path">The relative API endpoint path.</param>
+        /// <returns>The deserialized data of type <typeparamref name="T" />.</returns>
+        protected async Task<T> Delete<T>(string path) where T : class
+        {
+            var req = new RestRequest(path, Method.DELETE);
+
+            var resp = await Client.ExecuteTaskAsync(req);
+
+            if (!string.IsNullOrWhiteSpace(resp.Content) && (resp.StatusCode == HttpStatusCode.OK || resp.StatusCode == HttpStatusCode.NoContent))
+            {
+                // Weird case for strings - return as-is
+                if (typeof(T).IsAssignableFrom(typeof(string)))
+                {
+                    return resp.Content as T;
+                }
+
+                return JsonConvert.DeserializeObject<T>(resp.Content);
+            }
+
+            throw new Exception($"Unexpected response code {(int)resp.StatusCode} from Home Assistant API endpoint {path}.");
+        }
+
+        /// <summary>
+        /// Performs a DELETE request on the specified path.
+        /// </summary>
+        /// <param name="path">The relative API endpoint path.</param>
+        protected async Task Delete(string path)
+        {
+            var req = new RestRequest(path, Method.DELETE);
+
+            var resp = await Client.ExecuteTaskAsync(req);
+
+            if (!(resp.StatusCode == HttpStatusCode.OK || resp.StatusCode == HttpStatusCode.NoContent))
+            {
+                throw new Exception($"Unexpected response code {(int)resp.StatusCode} from Home Assistant API endpoint {path}.");
+            }
         }
     }
 }
