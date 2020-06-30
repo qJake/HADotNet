@@ -36,7 +36,7 @@ namespace HADotNet.Core.Clients
         /// <param name="newState">The new state value.</param>
         /// <param name="setAttributes">Optional. The attributes to set.</param>
         /// <returns>A <see cref="StateObject" /> representing the updated state of the updated <paramref name="entityId" />.</returns>
-        public async Task<StateObject> SetState(string entityId, string newState, Dictionary<string, object> setAttributes = null) => await Post<StateObject>($"/api/states/{entityId}", Newtonsoft.Json.JsonConvert.SerializeObject(new { state = newState, attributes = setAttributes }));
+        public async Task<StateObject> SetState(string entityId, string newState, Dictionary<string, object> setAttributes = null) => await Post<StateObject>($"/api/states/{entityId}", new { state = newState, attributes = setAttributes });
 
     }
 }
