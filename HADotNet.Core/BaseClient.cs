@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Net;
+using System.Net.Http;
+using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
-using RestSharp;
 
 namespace HADotNet.Core
 {
@@ -14,7 +15,7 @@ namespace HADotNet.Core
         /// <summary>
         /// Gets or sets the Rest client.
         /// </summary>
-        protected RestClient Client { get; set; }
+        protected HttpClient Client { get; set; }
 
         /// <summary>
         /// Initializes a new <see cref="BaseClient" /> instance.
@@ -23,8 +24,9 @@ namespace HADotNet.Core
         /// <param name="apiKey">The long-lived Home Assistant API key.</param>
         protected BaseClient(Uri instance, string apiKey)
         {
-            Client = new RestClient(instance);
-            Client.AddDefaultHeader("Authorization", $"Bearer {apiKey}");
+            Client = new HttpClient();
+            Client.BaseAddress = instance;
+            Client.DefaultRequestHeaders.Add("Authorization", $"Bearer {apiKey}");
         }
 
         /// <summary>
@@ -35,18 +37,21 @@ namespace HADotNet.Core
         /// <returns>The deserialized data of type <typeparamref name="T" />.</returns>
         protected async Task<T> Get<T>(string path) where T : class
         {
-            var req = new RestRequest(path);
-            var resp = await Client.ExecuteGetAsync(req);
+            var resp = await Client.GetAsync(path);
 
-            if (!string.IsNullOrWhiteSpace(resp.Content) && (resp.StatusCode == HttpStatusCode.OK || resp.StatusCode == HttpStatusCode.Created))
+            resp.EnsureSuccessStatusCode();
+
+            var content = await resp.Content.ReadAsStringAsync();
+
+            if (!string.IsNullOrWhiteSpace(content) && (resp.StatusCode == HttpStatusCode.OK || resp.StatusCode == HttpStatusCode.Created))
             {
                 // Weird case for strings - return as-is
                 if (typeof(T).IsAssignableFrom(typeof(string)))
                 {
-                    return resp.Content as T;
+                    return content as T;
                 }
 
-                return JsonConvert.DeserializeObject<T>(resp.Content);
+                return JsonConvert.DeserializeObject<T>(content);
             }
 
             throw new Exception($"Unexpected response code {(int)resp.StatusCode} from Home Assistant API endpoint {path}.");
@@ -62,29 +67,25 @@ namespace HADotNet.Core
         /// <returns></returns>
         protected async Task<T> Post<T>(string path, object body, bool isRawBody = false) where T : class
         {
-            var req = new RestRequest(path);
-            if (body != null)
-            {
-                if (isRawBody)
-                {
-                    req.AddParameter("application/json", body.ToString(), ParameterType.RequestBody);
-                }
-                else
-                {
-                    req.AddParameter("application/json", JsonConvert.SerializeObject(body), ParameterType.RequestBody);
-                }
-            }
-            var resp = await Client.ExecutePostAsync(req);
+            var json = isRawBody
+                ? body.ToString()
+                : JsonConvert.SerializeObject(body);
 
-            if (!string.IsNullOrWhiteSpace(resp.Content) && (resp.StatusCode == HttpStatusCode.OK || resp.StatusCode == HttpStatusCode.Created))
+            var resp = await Client.PostAsync(path, new StringContent(json, Encoding.UTF8, "application/json"));
+
+            resp.EnsureSuccessStatusCode();
+
+            var content = await resp.Content.ReadAsStringAsync();
+
+            if (!string.IsNullOrWhiteSpace(content) && (resp.StatusCode == HttpStatusCode.OK || resp.StatusCode == HttpStatusCode.Created))
             {
                 // Weird case for strings - return as-is
                 if (typeof(T).IsAssignableFrom(typeof(string)))
                 {
-                    return resp.Content as T;
+                    return content as T;
                 }
 
-                return JsonConvert.DeserializeObject<T>(resp.Content);
+                return JsonConvert.DeserializeObject<T>(content);
             }
 
             throw new Exception($"Unexpected response code {(int)resp.StatusCode} from Home Assistant API endpoint {path}.");
@@ -98,19 +99,21 @@ namespace HADotNet.Core
         /// <returns>The deserialized data of type <typeparamref name="T" />.</returns>
         protected async Task<T> Delete<T>(string path) where T : class
         {
-            var req = new RestRequest(path, Method.DELETE);
+            var resp = await Client.DeleteAsync(path);
 
-            var resp = await Client.ExecuteAsync(req);
+            resp.EnsureSuccessStatusCode();
 
-            if (!string.IsNullOrWhiteSpace(resp.Content) && (resp.StatusCode == HttpStatusCode.OK || resp.StatusCode == HttpStatusCode.NoContent))
+            var content = await resp.Content.ReadAsStringAsync();
+
+            if (!string.IsNullOrWhiteSpace(content) && (resp.StatusCode == HttpStatusCode.OK || resp.StatusCode == HttpStatusCode.NoContent))
             {
                 // Weird case for strings - return as-is
                 if (typeof(T).IsAssignableFrom(typeof(string)))
                 {
-                    return resp.Content as T;
+                    return content as T;
                 }
 
-                return JsonConvert.DeserializeObject<T>(resp.Content);
+                return JsonConvert.DeserializeObject<T>(content);
             }
 
             throw new Exception($"Unexpected response code {(int)resp.StatusCode} from Home Assistant API endpoint {path}.");
@@ -122,9 +125,9 @@ namespace HADotNet.Core
         /// <param name="path">The relative API endpoint path.</param>
         protected async Task Delete(string path)
         {
-            var req = new RestRequest(path, Method.DELETE);
+            var resp = await Client.DeleteAsync(path);
 
-            var resp = await Client.ExecuteAsync(req);
+            resp.EnsureSuccessStatusCode();
 
             if (!(resp.StatusCode == HttpStatusCode.OK || resp.StatusCode == HttpStatusCode.NoContent))
             {
