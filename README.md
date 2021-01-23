@@ -13,6 +13,21 @@ A simple, straighforward .NET Standard library for the [Home Assistant](https://
 * DI-friendly client initialization (suitable for ASP.NET Core)
 * Home Assistant data is represented by strongly-typed, commented model classes
 
+### Supported Home Assistant APIs
+
+* Root API (*Verifies the HA API is responding*)
+* Automation API
+* Google Calendar API (*Unofficial*)
+* Discovery API
+* Entity API
+* Error Log API
+* Events API
+* History API
+* Logbook API
+* Services API
+* States API
+* Template API
+
 ## Getting Started
 
 ### From NuGet (Recommended)
