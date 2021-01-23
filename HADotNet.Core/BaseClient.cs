@@ -24,6 +24,7 @@ namespace HADotNet.Core
         protected BaseClient(Uri instance, string apiKey)
         {
             Client = new RestClient(instance);
+            Client.AutomaticDecompression = false;
             Client.AddDefaultHeader("Authorization", $"Bearer {apiKey}");
         }
 
@@ -36,6 +37,11 @@ namespace HADotNet.Core
         protected async Task<T> Get<T>(string path) where T : class
         {
             var req = new RestRequest(path);
+
+            // Bug in HA or RestSharp if Gzip is enabled, so disable it for now
+            req.AddDecompressionMethod(DecompressionMethods.None);
+            req.AddHeader("Accept-Encoding", "identity");
+
             var resp = await Client.ExecuteGetAsync(req);
 
             if (!string.IsNullOrWhiteSpace(resp.Content) && (resp.StatusCode == HttpStatusCode.OK || resp.StatusCode == HttpStatusCode.Created))
