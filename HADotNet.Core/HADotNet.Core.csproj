@@ -18,7 +18,7 @@
     <RepositoryUrl>https://github.com/qJake/HADotNet.git</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <PackageReleaseNotes></PackageReleaseNotes>
-    <LangVersion>8.0</LangVersion>
+    <LangVersion>7.3</LangVersion>
     <AssemblyVersion>1.4.0.0</AssemblyVersion>
     <FileVersion>1.4.0.0</FileVersion>
   </PropertyGroup>
