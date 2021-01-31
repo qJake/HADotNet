@@ -4,7 +4,7 @@ using NUnit.Framework;
 using System;
 using System.Threading.Tasks;
 
-namespace Tests
+namespace HADotNet.Core.Tests
 {
     public class HistoryTests
     {
