@@ -14,13 +14,13 @@ namespace HADotNet.Core.Models
         public string Description { get; set; }
 
         /// <summary>
-        /// <code>True</code> if icon is available, otherwise <code>False</code>.
+        /// <c>True</c> if icon is available, otherwise <c>False</c>.
         /// </summary>
         [JsonProperty("icon")]
         public bool Icon { get; set; }
 
         /// <summary>
-        /// <code>True</code> if logo is available, otherwise <code>False</code>.
+        /// <c>True</c> if logo is available, otherwise <c>False</c>.
         /// </summary>
         [JsonProperty("logo")]
         public bool Logo { get; set; }
@@ -50,7 +50,7 @@ namespace HADotNet.Core.Models
         public string State { get; set; }
 
         /// <summary>
-        /// <code>True</code> if update is available, otherwise <code>False</code>.
+        /// <c>True</c> if update is available, otherwise <c>False</c>.
         /// </summary>
         [JsonProperty("update_available")]
         public bool UpdateAvailable { get; set; }

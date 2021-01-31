@@ -26,6 +26,7 @@ A simple, straighforward .NET Standard library for the [Home Assistant](https://
 * Logbook API
 * Services API
 * States API
+* Supervisor API (Supervisor-based installations only)
 * Template API
 
 ## Getting Started
