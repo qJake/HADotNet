@@ -1,12 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using HADotNet.Core;
-using HADotNet.Core.Clients;
+﻿using HADotNet.Core.Clients;
 using HADotNet.Core.Models;
 using NUnit.Framework;
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
-namespace Tests
+namespace HADotNet.Core.Tests
 {
     /// <summary>
     /// The tests for <see cref="AutomationClient"/>.

@@ -5,7 +5,7 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Tests
+namespace HADotNet.Core.Tests
 {
     public class EntityTests
     {

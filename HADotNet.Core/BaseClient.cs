@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Net;
 using System.Threading.Tasks;
+using HADotNet.Core.Domain;
 using Newtonsoft.Json;
 using RestSharp;
 
@@ -55,7 +56,7 @@ namespace HADotNet.Core
                 return JsonConvert.DeserializeObject<T>(resp.Content);
             }
 
-            throw new Exception($"Unexpected response code {(int)resp.StatusCode} from Home Assistant API endpoint {path}.");
+            throw new HttpResponseException((int)resp.StatusCode, resp.ResponseStatus.ToString(), resp.ResponseUri.PathAndQuery, $"Unexpected GET response code {(int)resp.StatusCode} from Home Assistant API endpoint {path}.");
         }
 
         /// <summary>
@@ -98,7 +99,7 @@ namespace HADotNet.Core
                 return JsonConvert.DeserializeObject<T>(resp.Content);
             }
 
-            throw new Exception($"Unexpected response code {(int)resp.StatusCode} from Home Assistant API endpoint {path}.");
+            throw new HttpResponseException((int)resp.StatusCode, resp.ResponseStatus.ToString(), resp.ResponseUri.PathAndQuery, $"Unexpected POST response code {(int)resp.StatusCode} from Home Assistant API endpoint {path}.");
         }
 
         /// <summary>
@@ -128,7 +129,7 @@ namespace HADotNet.Core
                 return JsonConvert.DeserializeObject<T>(resp.Content);
             }
 
-            throw new Exception($"Unexpected response code {(int)resp.StatusCode} from Home Assistant API endpoint {path}.");
+            throw new HttpResponseException((int)resp.StatusCode, resp.ResponseStatus.ToString(), resp.ResponseUri.PathAndQuery, $"Unexpected DELETE response code {(int)resp.StatusCode} from Home Assistant API endpoint {path}.");
         }
 
         /// <summary>
@@ -147,7 +148,7 @@ namespace HADotNet.Core
 
             if (!(resp.StatusCode == HttpStatusCode.OK || resp.StatusCode == HttpStatusCode.NoContent))
             {
-                throw new Exception($"Unexpected response code {(int)resp.StatusCode} from Home Assistant API endpoint {path}.");
+                throw new HttpResponseException((int)resp.StatusCode, resp.ResponseStatus.ToString(), resp.ResponseUri.PathAndQuery, $"Unexpected DELETE response code {(int)resp.StatusCode} from Home Assistant API endpoint {path}.");
             }
         }
     }

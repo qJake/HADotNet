@@ -1,10 +1,9 @@
-using HADotNet.Core;
 using HADotNet.Core.Clients;
 using NUnit.Framework;
 using System;
 using System.Threading.Tasks;
 
-namespace Tests
+namespace HADotNet.Core.Tests
 {
     public class CalendarTests
     {
