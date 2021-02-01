@@ -32,6 +32,6 @@ namespace HADotNet.Core.Clients
         /// <param name="start">The start date/time to search.</param>
         /// <param name="end">The end date/time to search.</param>
         /// <returns>A <see cref="List{CalendarObject}" /> representing the calendar items found.</returns>
-        public async Task<List<CalendarObject>> GetEvents(string calendarEntityName, DateTimeOffset start, DateTimeOffset end) => await Get<List<CalendarObject>>($"/api/calendars/{(calendarEntityName.StartsWith("calendar.") ? calendarEntityName : "calendar." + calendarEntityName)}?start={start:yyyy-MM-dd\\THH:mm:sszzz}&end={end:yyyy-MM-dd\\THH:mm:sszzz}");
+        public async Task<List<CalendarObject>> GetEvents(string calendarEntityName, DateTimeOffset start, DateTimeOffset end) => await Get<List<CalendarObject>>($"/api/calendars/{(calendarEntityName.StartsWith("calendar.") ? calendarEntityName : "calendar." + calendarEntityName)}?start={start:yyyy-MM-dd\\THH:mm:ss}Z&end={end:yyyy-MM-dd\\THH:mm:ss}Z");
     }
 }
