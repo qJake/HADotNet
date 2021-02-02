@@ -1,6 +1,7 @@
-﻿using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using Newtonsoft.Json;
+using HADotNet.Core.Constants;
 
 namespace HADotNet.Core.Models
 {
@@ -12,7 +13,7 @@ namespace HADotNet.Core.Models
         /// <summary>
         /// Gets or sets the Entity ID that this state represents.
         /// </summary>
-        [JsonProperty("entity_id")]
+        [JsonProperty(AttributeConstants.EntityId)]
         public string EntityId { get; set; }
 
         /// <summary>
@@ -33,13 +34,13 @@ namespace HADotNet.Core.Models
         /// <summary>
         /// Gets or sets the UTC date and time that this state was last changed.
         /// </summary>
-        [JsonProperty("last_changed")]
+        [JsonProperty(AttributeConstants.LastChanged)]
         public DateTimeOffset LastChanged { get; set; }
 
         /// <summary>
         /// Gets or sets the UTC date and time that this state was last updated.
         /// </summary>
-        [JsonProperty("last_updated")]
+        [JsonProperty(AttributeConstants.LastUpdated)]
         public DateTimeOffset LastUpdated { get; set; }
 
         /// <summary>

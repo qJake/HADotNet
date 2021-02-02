@@ -1,0 +1,30 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <PackOnBuild>true</PackOnBuild>
+    <PackageId>HADotNet.Entities</PackageId>
+    <PackageVersion>0.1.0</PackageVersion>
+    <Authors>https://github.com/qJake</Authors>
+    <Description>A Home Assistant library for .NET Standard that represent Home Assistant entities.</Description>
+    <NeutralLanguage>en-US</NeutralLanguage>
+    <Summary>A library for working with the Home Asstant entities represented as C# classes.</Summary>
+    <PackageTags>home-assistant external api library</PackageTags>
+    <Title>HADotNet Entities Library</Title>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Version>0.0.1</Version>
+    <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
+    <PackageProjectUrl>https://github.com/qJake/HADotNet</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/qJake/HADotNet.git</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageReleaseNotes></PackageReleaseNotes>
+    <LangVersion>7.3</LangVersion>
+    <AssemblyVersion>0.0.1.0</AssemblyVersion>
+    <FileVersion>0.0.1.0</FileVersion>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\HADotNet.Core\HADotNet.Core.csproj" />
+  </ItemGroup>
+
+</Project>
