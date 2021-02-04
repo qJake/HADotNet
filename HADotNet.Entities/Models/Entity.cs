@@ -4,6 +4,7 @@ using HADotNet.Core;
 using HADotNet.Core.Constants;
 using HADotNet.Core.Clients;
 using HADotNet.Core.Models;
+using System;
 
 namespace HADotNet.Entities.Models
 {
@@ -31,6 +32,21 @@ namespace HADotNet.Entities.Models
         /// Gets the current state
         /// </summary>
         public string State { get; set; }
+
+        /// <summary>
+        /// Attributes
+        /// </summary>
+        public Dictionary<string, object> Attributes { get; set; }
+
+        /// <summary>
+        /// Gets or sets the UTC date and time that this state was last changed.
+        /// </summary>
+        public DateTimeOffset LastChanged { get; set; }
+
+        /// <summary>
+        /// Gets or sets the UTC date and time that this state was last updated.
+        /// </summary>
+        public DateTimeOffset LastUpdated { get; set; }
 
         /// <summary>
         /// The service client
@@ -74,5 +90,19 @@ namespace HADotNet.Entities.Models
 
             return ServiceClient.CallService(Domain, service, fields);
         }
+
+        /// <summary>
+        /// Attempts to get the value of the specified attribute by <paramref name="name" />, and cast the value to type <typeparamref name="T" />.
+        /// </summary>
+        /// <exception cref="InvalidCastException">Thrown when the specified type <typeparamref name="T" /> cannot be cast to the attribute's current value.</exception>
+        /// <typeparam name="T">The desired type to cast the attribute value to.</typeparam>
+        /// <param name="name">The name of the attribute to retrieve the value for.</param>
+        /// <returns>The attribute's current value, cast to type <typeparamref name="T" />.</returns>
+        public T GetAttributeValue<T>(string name) => !Attributes.ContainsKey(name) ? default : (T)Attributes[name];
+
+        /// <summary>
+        /// Gets a string representation of this entity's state.
+        /// </summary>
+        public override string ToString() => $"{EntityId}: {State}";
     }
 }

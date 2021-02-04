@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using HADotNet.Core;
 using HADotNet.Core.Clients;
 using HADotNet.Entities.Helpers;
+using HADotNet.Entities.Mappers;
 using HADotNet.Entities.Models;
 
 namespace HADotNet.Entities.Services
@@ -57,27 +58,14 @@ namespace HADotNet.Entities.Services
         /// <returns></returns>
         public async Task<TEntity> GetEntity<TEntity>(string entityId) where TEntity : Entity, new()
         {
-            
-            string domain;
-            if (entityId.Contains("."))
+            if (!entityId.Contains("."))
             {
-                var splitted = entityId.Split('.');
-                domain = splitted[0];
-                entityId = splitted[1];
-            }
-            else
-            {
-                domain = EntityHelper.GetDomainFromEntityType<TEntity>();
+                entityId = $"{EntityHelper.GetDomainFromEntityType<TEntity>()}.{entityId}";
             }
 
-            var entityState = await _statesClient.GetState($"{domain}.{entityId}");
-            var entityIdWithoutDomain = entityId.Split('.')[1];
-            var entity = new TEntity
-            {
-                State = entityState.State,
-                EntityId = entityIdWithoutDomain,
-                EntityName = entityState.GetFriendlyName()
-            };
+            var entityState = await _statesClient.GetState(entityId);
+
+            var entity = EntityMapper.MapToEntity<TEntity>(entityState);
 
             return entity;
         }
