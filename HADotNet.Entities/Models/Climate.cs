@@ -17,6 +17,19 @@ namespace HADotNet.Entities.Models
         {
         }
 
+        public double CurrentHumidity => GetAttributeValue<double>(AttributeConstants.CurrentHumidity);
+        public double CurrentTemperature => GetAttributeValue<double>(AttributeConstants.CurrentTemperature);
+        public string HvacAction => GetAttributeValue<string>(AttributeConstants.HvacAction);
+        public string[] HvacModes => GetAttributeValue<string[]>(AttributeConstants.HvacModes);
+        public double MaxTemp => GetAttributeValue<double>(AttributeConstants.MaxTemp);
+        public double MinTemp => GetAttributeValue<double>(AttributeConstants.MinTemp);
+        public double OffsetCelsius => GetAttributeValue<double>(AttributeConstants.OffsetCelsius);
+        public double OffsetFahrenheit => GetAttributeValue<double>(AttributeConstants.OffsetFahrenheit);
+        public string PresetMode => GetAttributeValue<string>(AttributeConstants.PresetMode);
+        public string[] PresetModes => GetAttributeValue<string[]>(AttributeConstants.PresetModes);
+        public double TargetTempStep => GetAttributeValue<double>(AttributeConstants.TargetTempStep);
+        public double Temperature => GetAttributeValue<double>(AttributeConstants.Temperature);
+
         /// <summary>
         /// Turn on the climate entity
         /// </summary>
@@ -44,7 +57,7 @@ namespace HADotNet.Entities.Models
         {
             var data = new Dictionary<string, object>
             {
-                { AttributeConstants.Temperature, temperature }
+                { AttributeConstants .Temperature, temperature }
             };
 
             return CallService(ServiceConstants.SetTemperature, data);
@@ -59,7 +72,7 @@ namespace HADotNet.Entities.Models
         {
             var data = new Dictionary<string, object>
             {
-                { AttributeConstants.HvacMode, hvacMode }
+                { AttributeConstants .HvacMode, hvacMode }
             };
 
             return CallService(ServiceConstants.SetHvacMode, data);

@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using System.Text.RegularExpressions;
+using HADotNet.Core.Constants;
 using HADotNet.Core.Models;
 using HADotNet.Entities.Models;
 
@@ -14,7 +15,7 @@ namespace HADotNet.Entities.Helpers
         /// <returns></returns>
         public static string GetFriendlyName(this StateObject stateObject)
         {
-            var friendlyName = stateObject.GetAttributeValue<string>("friendly_name");
+            var friendlyName = stateObject.GetAttributeValue<string>(AttributeConstants.FriendlyName);
             if (string.IsNullOrEmpty(friendlyName))
             {
                 friendlyName = ToFriendlyName(stateObject.EntityId);
