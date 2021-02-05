@@ -17,8 +17,8 @@ namespace HADotNet.Entities.Models
         {
         }
 
-        public string[] EffectList => GetAttributeValue<string[]>(AttributeConstants.EffectList);
-        public string[] Children => GetAttributeValue<string[]>(AttributeConstants.EntityId);
+        public string[] EffectList => GetAttributeArray<string>(AttributeConstants.EffectList);
+        public string[] Children => GetAttributeArray<string>(AttributeConstants.EntityId);
         public int MaxMireds => GetAttributeValue<int>(AttributeConstants.MaxMireds);
         public int MinMireds => GetAttributeValue<int>(AttributeConstants.MinMireds);
 

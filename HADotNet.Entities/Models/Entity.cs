@@ -1,10 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using HADotNet.Core;
 using HADotNet.Core.Constants;
-using HADotNet.Core.Clients;
 using HADotNet.Core.Models;
-using System;
+using HADotNet.Core.Clients;
+using HADotNet.Entities.Extensions;
 
 namespace HADotNet.Entities.Models
 {
@@ -36,7 +37,7 @@ namespace HADotNet.Entities.Models
         /// <summary>
         /// Attributes
         /// </summary>
-        public Dictionary<string, object> Attributes { get; set; }
+        public Dictionary<string, object> Attributes { get; set; } = new Dictionary<string, object>();
 
         /// <summary>
         /// Gets or sets the UTC date and time that this state was last changed.
@@ -99,6 +100,15 @@ namespace HADotNet.Entities.Models
         /// <param name="name">The name of the attribute to retrieve the value for.</param>
         /// <returns>The attribute's current value, cast to type <typeparamref name="T" />.</returns>
         public T GetAttributeValue<T>(string name) => !Attributes.ContainsKey(name) ? default : (T)Attributes[name];
+
+        /// <summary>
+        /// Attempts to get the value of the specified attribute by <paramref name="name" />, and cast the value to type <typeparamref name="T" />.
+        /// </summary>
+        /// <exception cref="InvalidCastException">Thrown when the specified type <typeparamref name="T" /> cannot be cast to the attribute's current value.</exception>
+        /// <typeparam name="T">The desired type to cast the attribute value to.</typeparam>
+        /// <param name="name">The name of the attribute to retrieve the value for.</param>
+        /// <returns>The attribute's current value, cast to type <typeparamref name="T" />.</returns>
+        public T[] GetAttributeArray<T>(string name) => Attributes.GetAttributeArray<T>(name);
 
         /// <summary>
         /// Gets a string representation of this entity's state.
