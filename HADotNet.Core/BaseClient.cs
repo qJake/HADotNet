@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Net;
+using System.Net.Http;
+using System.Text;
 using System.Threading.Tasks;
-using HADotNet.Core.Domain;
 using Newtonsoft.Json;
-using RestSharp;
 
 namespace HADotNet.Core
 {
@@ -15,18 +15,19 @@ namespace HADotNet.Core
         /// <summary>
         /// Gets or sets the Rest client.
         /// </summary>
-        protected RestClient Client { get; set; }
+        protected HttpClient Client { get; set; }
 
         /// <summary>
         /// Initializes a new <see cref="BaseClient" /> instance.
         /// </summary>
         /// <param name="instance">The Home Assistant instance URL.</param>
         /// <param name="apiKey">The long-lived Home Assistant API key.</param>
-        protected BaseClient(Uri instance, string apiKey)
+        /// <param name="client">The Http client.</param>
+        protected BaseClient(Uri instance, string apiKey, HttpClient client)
         {
-            Client = new RestClient(instance);
-            Client.AutomaticDecompression = false;
-            Client.AddDefaultHeader("Authorization", $"Bearer {apiKey}");
+            Client = client;
+            Client.BaseAddress = instance;
+            Client.DefaultRequestHeaders.Add("Authorization", $"Bearer {apiKey}");
         }
 
         /// <summary>
@@ -37,26 +38,24 @@ namespace HADotNet.Core
         /// <returns>The deserialized data of type <typeparamref name="T" />.</returns>
         protected async Task<T> Get<T>(string path) where T : class
         {
-            var req = new RestRequest(path);
+            var resp = await Client.GetAsync(path);
 
-            // Bug in HA or RestSharp if Gzip is enabled, so disable it for now
-            req.AddDecompressionMethod(DecompressionMethods.None);
-            req.AddHeader("Accept-Encoding", "identity");
+            resp.EnsureSuccessStatusCode();
 
-            var resp = await Client.ExecuteGetAsync(req);
+            var content = await resp.Content.ReadAsStringAsync();
 
-            if (!string.IsNullOrWhiteSpace(resp.Content) && (resp.StatusCode == HttpStatusCode.OK || resp.StatusCode == HttpStatusCode.Created))
+            if (!string.IsNullOrWhiteSpace(content) && (resp.StatusCode == HttpStatusCode.OK || resp.StatusCode == HttpStatusCode.Created))
             {
                 // Weird case for strings - return as-is
                 if (typeof(T).IsAssignableFrom(typeof(string)))
                 {
-                    return resp.Content as T;
+                    return content as T;
                 }
 
-                return JsonConvert.DeserializeObject<T>(resp.Content);
+                return JsonConvert.DeserializeObject<T>(content);
             }
 
-            throw new HttpResponseException((int)resp.StatusCode, resp.ResponseStatus.ToString(), resp.ResponseUri.PathAndQuery, $"Unexpected GET response code {(int)resp.StatusCode} from Home Assistant API endpoint {path}.");
+            throw new Exception($"Unexpected response code {(int)resp.StatusCode} from Home Assistant API endpoint {path}.");
         }
 
         /// <summary>
@@ -69,37 +68,28 @@ namespace HADotNet.Core
         /// <returns></returns>
         protected async Task<T> Post<T>(string path, object body, bool isRawBody = false) where T : class
         {
-            var req = new RestRequest(path);
+            var json = isRawBody
+                ? body.ToString()
+                : JsonConvert.SerializeObject(body);
 
-            // Bug in HA or RestSharp if Gzip is enabled, so disable it for now
-            req.AddDecompressionMethod(DecompressionMethods.None);
-            req.AddHeader("Accept-Encoding", "identity");
+            var resp = await Client.PostAsync(path, new StringContent(json, Encoding.UTF8, "application/json"));
 
-            if (body != null)
-            {
-                if (isRawBody)
-                {
-                    req.AddParameter("application/json", body.ToString(), ParameterType.RequestBody);
-                }
-                else
-                {
-                    req.AddParameter("application/json", JsonConvert.SerializeObject(body), ParameterType.RequestBody);
-                }
-            }
-            var resp = await Client.ExecutePostAsync(req);
+            resp.EnsureSuccessStatusCode();
 
-            if (!string.IsNullOrWhiteSpace(resp.Content) && (resp.StatusCode == HttpStatusCode.OK || resp.StatusCode == HttpStatusCode.Created))
+            var content = await resp.Content.ReadAsStringAsync();
+
+            if (!string.IsNullOrWhiteSpace(content) && (resp.StatusCode == HttpStatusCode.OK || resp.StatusCode == HttpStatusCode.Created))
             {
                 // Weird case for strings - return as-is
                 if (typeof(T).IsAssignableFrom(typeof(string)))
                 {
-                    return resp.Content as T;
+                    return content as T;
                 }
 
-                return JsonConvert.DeserializeObject<T>(resp.Content);
+                return JsonConvert.DeserializeObject<T>(content);
             }
 
-            throw new HttpResponseException((int)resp.StatusCode, resp.ResponseStatus.ToString(), resp.ResponseUri.PathAndQuery, $"Unexpected POST response code {(int)resp.StatusCode} from Home Assistant API endpoint {path}.");
+            throw new Exception($"Unexpected response code {(int)resp.StatusCode} from Home Assistant API endpoint {path}.");
         }
 
         /// <summary>
@@ -110,26 +100,24 @@ namespace HADotNet.Core
         /// <returns>The deserialized data of type <typeparamref name="T" />.</returns>
         protected async Task<T> Delete<T>(string path) where T : class
         {
-            var req = new RestRequest(path, Method.DELETE);
+            var resp = await Client.DeleteAsync(path);
 
-            // Bug in HA or RestSharp if Gzip is enabled, so disable it for now
-            req.AddDecompressionMethod(DecompressionMethods.None);
-            req.AddHeader("Accept-Encoding", "identity");
+            resp.EnsureSuccessStatusCode();
 
-            var resp = await Client.ExecuteAsync(req);
+            var content = await resp.Content.ReadAsStringAsync();
 
-            if (!string.IsNullOrWhiteSpace(resp.Content) && (resp.StatusCode == HttpStatusCode.OK || resp.StatusCode == HttpStatusCode.NoContent))
+            if (!string.IsNullOrWhiteSpace(content) && (resp.StatusCode == HttpStatusCode.OK || resp.StatusCode == HttpStatusCode.NoContent))
             {
                 // Weird case for strings - return as-is
                 if (typeof(T).IsAssignableFrom(typeof(string)))
                 {
-                    return resp.Content as T;
+                    return content as T;
                 }
 
-                return JsonConvert.DeserializeObject<T>(resp.Content);
+                return JsonConvert.DeserializeObject<T>(content);
             }
 
-            throw new HttpResponseException((int)resp.StatusCode, resp.ResponseStatus.ToString(), resp.ResponseUri.PathAndQuery, $"Unexpected DELETE response code {(int)resp.StatusCode} from Home Assistant API endpoint {path}.");
+            throw new Exception($"Unexpected response code {(int)resp.StatusCode} from Home Assistant API endpoint {path}.");
         }
 
         /// <summary>
@@ -138,17 +126,13 @@ namespace HADotNet.Core
         /// <param name="path">The relative API endpoint path.</param>
         protected async Task Delete(string path)
         {
-            var req = new RestRequest(path, Method.DELETE);
+            var resp = await Client.DeleteAsync(path);
 
-            // Bug in HA or RestSharp if Gzip is enabled, so disable it for now
-            req.AddDecompressionMethod(DecompressionMethods.None);
-            req.AddHeader("Accept-Encoding", "identity");
-
-            var resp = await Client.ExecuteAsync(req);
+            resp.EnsureSuccessStatusCode();
 
             if (!(resp.StatusCode == HttpStatusCode.OK || resp.StatusCode == HttpStatusCode.NoContent))
             {
-                throw new HttpResponseException((int)resp.StatusCode, resp.ResponseStatus.ToString(), resp.ResponseUri.PathAndQuery, $"Unexpected DELETE response code {(int)resp.StatusCode} from Home Assistant API endpoint {path}.");
+                throw new Exception($"Unexpected response code {(int)resp.StatusCode} from Home Assistant API endpoint {path}.");
             }
         }
     }

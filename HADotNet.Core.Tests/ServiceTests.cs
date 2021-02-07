@@ -1,30 +1,30 @@
-using HADotNet.Core.Clients;
-using NUnit.Framework;
 using System;
 using System.Threading.Tasks;
+using HADotNet.Core.Clients;
+using HADotNet.Core.Tests.Infrastructure;
+using NUnit.Framework;
 
 namespace HADotNet.Core.Tests
 {
     public class ServiceTests
     {
-        private Uri Instance { get; set; }
-        private string ApiKey { get; set; }
+        private ServiceClient Client { get; set; }
 
-        [SetUp]
+        [OneTimeSetUp]
         public void Setup()
         {
-            Instance = new Uri(Environment.GetEnvironmentVariable("HADotNet:Tests:Instance"));
-            ApiKey = Environment.GetEnvironmentVariable("HADotNet:Tests:ApiKey");
+            var instance = new Uri(Environment.GetEnvironmentVariable("HADotNet:Tests:Instance"));
+            var apiKey = Environment.GetEnvironmentVariable("HADotNet:Tests:ApiKey");
 
-            ClientFactory.Initialize(Instance, ApiKey);
+            ClientFactory.Initialize(instance, apiKey, DefaultHttpClientFactory.GetInstance());
+
+            Client = ClientFactory.GetClient<ServiceClient>();
         }
 
         [Test]
         public async Task ShouldRetrieveServiceList()
         {
-            var client = ClientFactory.GetClient<ServiceClient>();
-
-            var services = await client.GetServices();
+            var services = await Client.GetServices();
 
             Assert.IsNotNull(services);
             Assert.AreNotEqual(0, services.Count);
@@ -33,9 +33,7 @@ namespace HADotNet.Core.Tests
         [Test]
         public async Task ShouldCallService()
         {
-            var client = ClientFactory.GetClient<ServiceClient>();
-
-            var returnState = await client.CallService("light.turn_on", new { entity_id = "light.sample_light" });
+            var returnState = await Client.CallService("light.turn_on", new { entity_id = "light.sample_light" });
 
             Assert.IsNotNull(returnState);
 
@@ -46,9 +44,7 @@ namespace HADotNet.Core.Tests
         [Test]
         public async Task ShouldCallServiceWithEntityId()
         {
-            var client = ClientFactory.GetClient<ServiceClient>();
-
-            var returnState = await client.CallServiceForEntities("light.turn_on", "light.my_light_1");
+            var returnState = await Client.CallServiceForEntities("light.turn_on", "light.my_light_1");
 
             Assert.IsNotNull(returnState);
 
@@ -59,9 +55,7 @@ namespace HADotNet.Core.Tests
         [Test]
         public async Task ShouldCallServiceWithEntityIds()
         {
-            var client = ClientFactory.GetClient<ServiceClient>();
-
-            var returnState = await client.CallServiceForEntities("light.turn_on", "light.my_light_1", "light.my_light_2");
+            var returnState = await Client.CallServiceForEntities("light.turn_on", "light.my_light_1", "light.my_light_2");
 
             Assert.IsNotNull(returnState);
 

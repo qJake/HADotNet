@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Diagnostics;
+using System.Net.Http;
 
 namespace HADotNet.Core
 {
@@ -9,6 +11,7 @@ namespace HADotNet.Core
     {
         private static Uri InstanceAddress { get; set; }
         private static string ApiKey { get; set; }
+        private static IHttpClientFactory HttpClientFactory { get; set; }
 
         /// <summary>
         /// Gets whether or not the Client Factory has been initialized.
@@ -20,10 +23,12 @@ namespace HADotNet.Core
         /// </summary>
         /// <param name="instanceAddress">The Home Assistant base instance address (do not include /api/).</param>
         /// <param name="apiKey">The Home Assistant long-lived access token.</param>
-        public static void Initialize(Uri instanceAddress, string apiKey)
+        /// <param name="httpClientFactory">The Http Client Factory.</param>
+        public static void Initialize(Uri instanceAddress, string apiKey, IHttpClientFactory httpClientFactory)
         {
             InstanceAddress = instanceAddress;
             ApiKey = apiKey;
+            HttpClientFactory = httpClientFactory;
             IsInitialized = true;
         }
 
@@ -32,7 +37,9 @@ namespace HADotNet.Core
         /// </summary>
         /// <param name="instanceAddress">The Home Assistant base instance address (do not include /api/).</param>
         /// <param name="apiKey">The Home Assistant long-lived access token.</param>
-        public static void Initialize(string instanceAddress, string apiKey) => Initialize(new Uri(instanceAddress), apiKey);
+        /// <param name="httpClientFactory">The Http Client Factory.</param>
+        public static void Initialize(string instanceAddress, string apiKey, IHttpClientFactory httpClientFactory) 
+            => Initialize(new Uri(instanceAddress), apiKey, httpClientFactory);
 
         /// <summary>
         /// Resets the Client Factory to its initial state (not initialized).
@@ -45,11 +52,22 @@ namespace HADotNet.Core
         }
 
         /// <summary>
-        /// Retrieves a new instance of a client by type, preconfigured with the same <see cref="InstanceAddress" /> and <see cref="ApiKey" /> as this <see cref="ClientFactory" /> (from the last time <see cref="Initialize(Uri, string)" /> was called).
+        /// Retrieves a new instance of a client by type, preconfigured with the same <see cref="InstanceAddress" /> and <see cref="ApiKey" /> as this <see cref="ClientFactory" /> (from the last time <see cref="Initialize(Uri, string, IHttpClientFactory)" /> was called).
         /// </summary>
         /// <typeparam name="TClient">The type of client to get.</typeparam>
-        /// <exception cref="Exception">Thrown if this <see cref="ClientFactory" /> is not initialized (call <see cref="Initialize(Uri, string)" /> first).</exception>
+        /// <exception cref="Exception">Thrown if this <see cref="ClientFactory" /> is not initialized (call <see cref="Initialize(Uri, string, IHttpClientFactory)" /> first).</exception>
         /// <returns>A new instance of the specified <typeparamref name="TClient" /> type.</returns>
-        public static TClient GetClient<TClient>() where TClient : BaseClient => (TClient)Activator.CreateInstance(typeof(TClient), InstanceAddress, ApiKey);
+        public static TClient GetClient<TClient>() where TClient : BaseClient
+        {
+            if (!IsInitialized)
+            {
+                Trace.TraceWarning("Trying to resolve client when factory is not initialized.");
+            }
+
+            var client = IsInitialized ? HttpClientFactory.CreateClient(nameof(TClient)) : new HttpClient();
+            
+            return (TClient)Activator.CreateInstance(typeof(TClient), InstanceAddress, ApiKey, client);
+        }
+            
     }
 }

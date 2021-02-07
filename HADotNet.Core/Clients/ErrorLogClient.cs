@@ -1,7 +1,7 @@
-﻿using HADotNet.Core.Models;
-using System;
-using System.Collections.Generic;
+﻿using System;
+using System.Net.Http;
 using System.Threading.Tasks;
+using HADotNet.Core.Models;
 
 namespace HADotNet.Core.Clients
 {
@@ -15,7 +15,8 @@ namespace HADotNet.Core.Clients
         /// </summary>
         /// <param name="instance">The Home Assistant base instance URL.</param>
         /// <param name="apiKey">The Home Assistant long-lived access token.</param>
-        public ErrorLogClient(Uri instance, string apiKey) : base(instance, apiKey) { }
+        /// <param name="httpClient">The Http client.</param>
+        public ErrorLogClient(Uri instance, string apiKey, HttpClient httpClient) : base(instance, apiKey, httpClient) { }
 
         /// <summary>
         /// Retrieves a list of error log entries.

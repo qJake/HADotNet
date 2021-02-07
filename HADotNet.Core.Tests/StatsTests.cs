@@ -1,30 +1,30 @@
 ﻿using System;
 using System.Threading.Tasks;
 using HADotNet.Core.Clients;
+using HADotNet.Core.Tests.Infrastructure;
 using NUnit.Framework;
 
 namespace HADotNet.Core.Tests
 {
     public class StatsTests
     {
-        private Uri Instance { get; set; }
-        private string ApiKey { get; set; }
+        private StatsClient Client { get; set; }
 
-        [SetUp]
+        [OneTimeSetUp]
         public void Setup()
         {
-            Instance = new Uri(Environment.GetEnvironmentVariable("HADotNet:Tests:Instance"));
-            ApiKey = Environment.GetEnvironmentVariable("HADotNet:Tests:ApiKey");
+            var instance = new Uri(Environment.GetEnvironmentVariable("HADotNet:Tests:Instance"));
+            var apiKey = Environment.GetEnvironmentVariable("HADotNet:Tests:ApiKey");
 
-            ClientFactory.Initialize(Instance, ApiKey);
+            ClientFactory.Initialize(instance, apiKey, DefaultHttpClientFactory.GetInstance());
+
+            Client = ClientFactory.GetClient<StatsClient>();
         }
 
         [Test]
         public async Task ShouldRetrieveSupervisorStats()
         {
-            var client = ClientFactory.GetClient<StatsClient>();
-
-            var stats = await client.GetSupervisorStats();
+            var stats = await Client.GetSupervisorStats();
 
             Assert.AreEqual("ok", stats.Result);
             Assert.IsNotNull(stats.Data);
@@ -33,9 +33,7 @@ namespace HADotNet.Core.Tests
         [Test]
         public async Task ShouldRetrieveCoreStats()
         {
-            var client = ClientFactory.GetClient<StatsClient>();
-
-            var stats = await client.GetCoreStats();
+            var stats = await Client.GetCoreStats();
 
             Assert.AreEqual("ok", stats.Result);
             Assert.IsNotNull(stats.Data);

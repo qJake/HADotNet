@@ -51,12 +51,25 @@ or build the project and include the DLL as a reference.
 The `ClientFactory` class is reponsible for initializing all other clients in a 
 reusable way, so you only have to define your instance URL and API key once.
 
-To initialize the `ClientFactory`, pass in your base Home Assistant URL and a
-long-lived access token that you created on your profile page.
+To initialize the `ClientFactory`, first you need to make sure that `IHttpClientFactory` is configured by adding the following line in `Startup.cs` file:
 
 ```csharp
-ClientFactory.Initialize("https://my-home-assistant-url/", "AbCdEf0123456789...");
+public void ConfigureServices(IServiceCollection services)
+{
+	services.AddHttpClient();
+}
 ```
+
+The pass in your base Home Assistant URL, a long-lived access token that you created on your profile page and resolved `IHttpClientFactory`:
+
+```csharp
+ClientFactory.Initialize("https://my-home-assistant-url/", "AbCdEf0123456789...", httpClientFactory);
+```
+
+Learn more how to [Use IHttpClientFactory to implement resilient HTTP requests](https://docs.microsoft.com/en-us/dotnet/architecture/microservices/implement-resilient-applications/use-httpclientfactory-to-implement-resilient-http-requests).
+
+You can also take a look at [Implement HTTP call retries with exponential backoff with IHttpClientFactory and Polly policies](https://docs.microsoft.com/en-us/dotnet/architecture/microservices/implement-resilient-applications/implement-http-call-retries-exponential-backoff-polly) for retry mechanism.
+
 
 ### Getting Home Assistant's Current Configuration
 

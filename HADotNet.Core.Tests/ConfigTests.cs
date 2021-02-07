@@ -1,30 +1,30 @@
-using HADotNet.Core.Clients;
-using NUnit.Framework;
 using System;
 using System.Threading.Tasks;
+using HADotNet.Core.Clients;
+using HADotNet.Core.Tests.Infrastructure;
+using NUnit.Framework;
 
 namespace HADotNet.Core.Tests
 {
     public class ConfigTests
     {
-        private Uri Instance { get; set; }
-        private string ApiKey { get; set; }
+        private ConfigClient Client { get; set; }
 
-        [SetUp]
+        [OneTimeSetUp]
         public void Setup()
         {
-            Instance = new Uri(Environment.GetEnvironmentVariable("HADotNet:Tests:Instance"));
-            ApiKey = Environment.GetEnvironmentVariable("HADotNet:Tests:ApiKey");
+            var instance = new Uri(Environment.GetEnvironmentVariable("HADotNet:Tests:Instance"));
+            var apiKey = Environment.GetEnvironmentVariable("HADotNet:Tests:ApiKey");
 
-            ClientFactory.Initialize(Instance, ApiKey);
+            ClientFactory.Initialize(instance, apiKey, DefaultHttpClientFactory.GetInstance());
+
+            Client = ClientFactory.GetClient<ConfigClient>();
         }
 
         [Test]
         public async Task ShouldRetrieveConfiguration()
         {
-            var client = ClientFactory.GetClient<ConfigClient>();
-
-            var config = await client.GetConfiguration();
+            var config = await Client.GetConfiguration();
 
             Assert.IsNotNull(config);
             Assert.IsNotNull(config.UnitSystem);
