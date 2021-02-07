@@ -57,7 +57,7 @@ namespace HADotNet.Entities.Models
         {
             var data = new Dictionary<string, object>
             {
-                { AttributeConstants .Temperature, temperature }
+                { AttributeConstants.Temperature, temperature }
             };
 
             return CallService(ServiceConstants.SetTemperature, data);
@@ -72,7 +72,7 @@ namespace HADotNet.Entities.Models
         {
             var data = new Dictionary<string, object>
             {
-                { AttributeConstants .HvacMode, hvacMode }
+                { AttributeConstants.HvacMode, hvacMode }
             };
 
             return CallService(ServiceConstants.SetHvacMode, data);

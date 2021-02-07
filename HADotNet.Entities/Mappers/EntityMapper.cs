@@ -4,7 +4,7 @@ using HADotNet.Entities.Models;
 
 namespace HADotNet.Entities.Mappers
 {
-    public class EntityMapper
+    internal static class EntityMapper
     {
         /// <summary>
         /// Maps a <see cref="StateObject"/> to an instance of <see cref="Entity"/>

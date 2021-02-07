@@ -3,10 +3,9 @@ using System.Collections.Generic;
 using NUnit.Framework;
 using Moq;
 using HADotNet.Core.Clients;
-using HADotNet.Entities.Services;
 using HADotNet.Entities.Models;
 
-namespace HADotNet.Entities.Tests.Services
+namespace HADotNet.Entities.Tests
 {
     public class EntitiesServiceTest
     {

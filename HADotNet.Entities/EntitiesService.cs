@@ -7,7 +7,7 @@ using HADotNet.Entities.Helpers;
 using HADotNet.Entities.Mappers;
 using HADotNet.Entities.Models;
 
-namespace HADotNet.Entities.Services
+namespace HADotNet.Entities
 {
     /// <summary>
     /// Class to retrieve specific type of entities

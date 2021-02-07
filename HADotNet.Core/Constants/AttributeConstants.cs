@@ -104,5 +104,15 @@
         /// Target temperature step attribute
         /// </summary>
         public const string TargetTempStep = "target_temp_step";
+
+        /// <summary>
+        /// Source attribute
+        /// </summary>
+        public const string Source = "source";
+
+        /// <summary>
+        /// Volume level attribute
+        /// </summary>
+        public const string VolumeLevel = "volume_level";
     }
 }
