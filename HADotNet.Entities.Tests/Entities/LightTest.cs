@@ -1,13 +1,10 @@
-﻿using HADotNet.Core;
-using HADotNet.Core.Clients;
-using HADotNet.Entities.Models;
-using HADotNet.Entities.Services;
-using NUnit.Framework;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
+using NUnit.Framework;
+using HADotNet.Core;
+using HADotNet.Core.Clients;
+using HADotNet.Entities.Models;
 
 namespace HADotNet.Entities.Tests.Entities
 {
