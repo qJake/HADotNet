@@ -6,6 +6,9 @@ using HADotNet.Entities.Models;
 
 namespace HADotNet.Entities.Helpers
 {
+    /// <summary>
+    /// A helper class for entity functions
+    /// </summary>
     public static class EntityHelper
     {
         /// <summary>

@@ -111,8 +111,18 @@
         public const string Source = "source";
 
         /// <summary>
+        /// Source list attribute
+        /// </summary>
+        public const string SourceList = "source_list";
+
+        /// <summary>
         /// Volume level attribute
         /// </summary>
         public const string VolumeLevel = "volume_level";
+
+        /// <summary>
+        /// Is muted attribute
+        /// </summary>
+        public const string IsMuted = "is_volume_muted";
     }
 }

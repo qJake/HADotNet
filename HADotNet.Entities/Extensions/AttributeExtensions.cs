@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace HADotNet.Entities.Extensions
 {
-    public static class AttributeExtensions
+    internal static class AttributeExtensions
     {
         public static T[] GetAttributeArray<T>(this StateObject stateObject, string name)
         {

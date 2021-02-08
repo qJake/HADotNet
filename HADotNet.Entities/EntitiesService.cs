@@ -12,7 +12,7 @@ namespace HADotNet.Entities
     /// <summary>
     /// Class to retrieve specific type of entities
     /// </summary>
-    public class EntitiesService
+    public class EntitiesService : IEntitiesService
     {
         private readonly EntityClient _entityClient;
         private readonly StatesClient _statesClient;

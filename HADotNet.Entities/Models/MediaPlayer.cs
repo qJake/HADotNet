@@ -2,17 +2,33 @@
 using System.Collections.Generic;
 using HADotNet.Core.Constants;
 using HADotNet.Core.Models;
+using HADotNet.Entities.Models.Interfaces;
 
 namespace HADotNet.Entities.Models
 {
     /// <summary>
     /// Represents a media player entity
     /// </summary>
-    public class MediaPlayer : Entity
+    public class MediaPlayer : Entity, ITurnOn, ITurnOff, IToggle
     {
         public MediaPlayer() : base(DomainConstants.MediaPlayer)
         {
         }
+
+        /// <summary>
+        /// List of possible sources
+        /// </summary>
+        public string[] SourceList => GetAttributeArray<string>(AttributeConstants.SourceList);
+
+        /// <summary>
+        /// Volume level
+        /// </summary>
+        public decimal? VolumeLevel => GetAttributeValue<decimal?>(AttributeConstants.VolumeLevel);
+
+        /// <summary>
+        /// Muted
+        /// </summary>
+        public bool? IsMuted => GetAttributeValue<bool?>(AttributeConstants.IsMuted);
 
         /// <summary>
         /// Turn on the media player

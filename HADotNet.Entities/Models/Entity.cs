@@ -1,18 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using System.Linq;
 using HADotNet.Core;
 using HADotNet.Core.Constants;
 using HADotNet.Core.Models;
 using HADotNet.Core.Clients;
 using HADotNet.Entities.Extensions;
+using HADotNet.Entities.Mappers;
+using HADotNet.Entities.Models.Interfaces;
 
 namespace HADotNet.Entities.Models
 {
     /// <summary>
     /// Represents a single entity
     /// </summary>
-    public abstract class Entity
+    public abstract class Entity : IUpdate
     {
         /// <summary>
         /// Gets or sets the Entity ID
@@ -55,6 +58,11 @@ namespace HADotNet.Entities.Models
         protected ServiceClient ServiceClient { get; } = ClientFactory.GetClient<ServiceClient>();
 
         /// <summary>
+        /// The states client
+        /// </summary>
+        protected StatesClient StatesClient { get; } = ClientFactory.GetClient<StatesClient>();
+
+        /// <summary>
         /// Creates an entity
         /// </summary>
         /// <param name="domain"></param>
@@ -73,23 +81,53 @@ namespace HADotNet.Entities.Models
         }
 
         /// <summary>
+        /// Update the properties of the entity
+        /// </summary>
+        /// <returns></returns>
+        public async Task<StateObject> Update()
+        {
+            var newState = await StatesClient.GetState(GetFullEntityId());
+            Update(newState);
+            return newState;
+        }
+
+        /// <summary>
+        /// Update the properties of the entity with the given <see cref="StateObject"/>
+        /// </summary>
+        /// <param name="newState"></param>
+        public void Update(StateObject newState)
+        {
+            if (newState != null)
+            {
+                EntityMapper.MapToEntity(this, newState);
+            }
+        }
+
+        /// <summary>
         /// Make a service call for the current entity
         /// </summary>
-        /// <param name="service"></param>
-        /// <param name="fields"></param>
+        /// <param name="service">The service to call</param>
+        /// <param name="fields">Extra parameters to send with the service</param>
         /// <returns></returns>
-        protected Task<List<StateObject>> CallService(string service, IDictionary<string, object> fields = null)
+        protected async Task<List<StateObject>> CallService(string service, IDictionary<string, object> fields = null)
         {
+            var fullEntityId = GetFullEntityId();
             if (fields == null)
             {
                 fields = new Dictionary<string, object>();
             }
             if (!fields.ContainsKey(AttributeConstants.EntityId))
             {
-                fields.Add(AttributeConstants.EntityId, GetFullEntityId());
+                fields.Add(AttributeConstants.EntityId, fullEntityId);
             }
 
-            return ServiceClient.CallService(Domain, service, fields);
+            var stateObjects = await ServiceClient.CallService(Domain, service, fields);
+
+            // TODO: What to do with other updated entities?
+            var updatedStateObject = stateObjects.FirstOrDefault(so => so.EntityId == fullEntityId);
+            Update(updatedStateObject);
+
+            return stateObjects;
         }
 
         /// <summary>
@@ -113,6 +151,6 @@ namespace HADotNet.Entities.Models
         /// <summary>
         /// Gets a string representation of this entity's state.
         /// </summary>
-        public override string ToString() => $"{EntityId}: {State}";
+        public override string ToString() => $"{GetFullEntityId()}: {State}";
     }
 }

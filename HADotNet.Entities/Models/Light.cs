@@ -2,13 +2,14 @@
 using System.Threading.Tasks;
 using HADotNet.Core.Constants;
 using HADotNet.Core.Models;
+using HADotNet.Entities.Models.Interfaces;
 
 namespace HADotNet.Entities.Models
 {
     /// <summary>
     /// Represents a light entity
     /// </summary>
-    public class Light : Entity
+    public class Light : Entity, ITurnOn, ITurnOff, IToggle
     {
         /// <summary>
         /// Creates a light entity
@@ -17,9 +18,24 @@ namespace HADotNet.Entities.Models
         {
         }
 
+        /// <summary>
+        /// List of possible effects
+        /// </summary>
         public string[] EffectList => GetAttributeArray<string>(AttributeConstants.EffectList);
+
+        /// <summary>
+        /// List of children lights entity id's
+        /// </summary>
         public string[] Children => GetAttributeArray<string>(AttributeConstants.EntityId);
+
+        /// <summary>
+        /// Maximum mireds
+        /// </summary>
         public int MaxMireds => GetAttributeValue<int>(AttributeConstants.MaxMireds);
+
+        /// <summary>
+        /// Minimum mireds
+        /// </summary>
         public int MinMireds => GetAttributeValue<int>(AttributeConstants.MinMireds);
 
         /// <summary>

@@ -6,7 +6,7 @@ using HADotNet.Core;
 using HADotNet.Core.Clients;
 using HADotNet.Entities.Models;
 
-namespace HADotNet.Entities.Tests.Entities
+namespace HADotNet.Entities.Tests.Models
 {
     public class LightTest
     {

@@ -2,13 +2,14 @@
 using System.Threading.Tasks;
 using HADotNet.Core.Constants;
 using HADotNet.Core.Models;
+using HADotNet.Entities.Models.Interfaces;
 
 namespace HADotNet.Entities.Models
 {
     /// <summary>
     /// Represents a switch entity
     /// </summary>
-    public class Switch : Entity
+    public class Switch : Entity, ITurnOn, ITurnOff, IToggle
     {
         public Switch() : base(DomainConstants.Switch)
         {
