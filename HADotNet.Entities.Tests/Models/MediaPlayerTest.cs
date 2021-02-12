@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Threading;
 using System.Threading.Tasks;
 using NUnit.Framework;
 using HADotNet.Core;
@@ -8,9 +7,9 @@ using HADotNet.Entities.Models;
 
 namespace HADotNet.Entities.Tests.Models
 {
-    public class LightTest
+    public class MediaPlayerTest
     {
-        private const string MY_LIGHT = "my_light";
+        private const string MY_MEDIA_PLAYER = "my_media_player";
 
         private EntitiesService _entitiesService;
 
@@ -29,15 +28,13 @@ namespace HADotNet.Entities.Tests.Models
         }
 
         [Test, Explicit]
-        public async Task TurnOn_ShouldTurnLightOn()
+        public async Task Pause_ShouldPauseMediaPlayer()
         {
-            var light = await _entitiesService.GetEntity<Light>(MY_LIGHT);
+            var mediaPlayer = await _entitiesService.GetEntity<MediaPlayer>(MY_MEDIA_PLAYER);
 
-            await light.TurnOn();
+            await mediaPlayer.Pause();
 
-            Thread.Sleep(5000);
-
-            await light.TurnOff();
+            Assert.AreEqual("paused", mediaPlayer.State);
         }
     }
 }

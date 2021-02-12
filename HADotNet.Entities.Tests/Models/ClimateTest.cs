@@ -11,6 +11,8 @@ namespace HADotNet.Entities.Tests.Models
     {
         private const string MY_CLIMATE = "my_climate";
 
+        private EntitiesService _entitiesService;
+
         [SetUp]
         public void Setup()
         {
@@ -18,17 +20,17 @@ namespace HADotNet.Entities.Tests.Models
             var apiKey = Environment.GetEnvironmentVariable("HADotNet:Tests:ApiKey");
 
             ClientFactory.Initialize(instance, apiKey);
+
+            var statesClient = ClientFactory.GetClient<StatesClient>();
+            var entityClient = ClientFactory.GetClient<EntityClient>();
+
+            _entitiesService = new EntitiesService(entityClient, statesClient);
         }
 
-        [Test]
+        [Test, Explicit]
         public async Task SetHvacMode_ShouldSetHvacMode()
         {
-            var entityClient = ClientFactory.GetClient<EntityClient>();
-            var statesClient = ClientFactory.GetClient<StatesClient>();
-
-            var entitiesService = new EntitiesService(entityClient, statesClient);
-
-            var climate = await entitiesService.GetEntity<Climate>(MY_CLIMATE);
+            var climate = await _entitiesService.GetEntity<Climate>(MY_CLIMATE);
 
             await climate.SetHvacMode("auto");
 
