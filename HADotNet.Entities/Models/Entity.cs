@@ -125,7 +125,17 @@ namespace HADotNet.Entities.Models
 
             // TODO: What to do with other updated entities?
             var updatedStateObject = stateObjects.FirstOrDefault(so => so.EntityId == fullEntityId);
-            Update(updatedStateObject);
+            if (updatedStateObject != null)
+            {
+                Update(updatedStateObject);
+            }
+            else
+            {
+                // TODO: Some operations do not return an updated StateObject, trigger manually? Or explicit?
+                // For example: MediaPlayer.Pause, Play
+                var explicitUpdatedState = await Update();
+                stateObjects.Add(explicitUpdatedState);
+            }
 
             return stateObjects;
         }
