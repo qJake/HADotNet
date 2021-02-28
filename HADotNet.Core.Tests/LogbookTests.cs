@@ -1,31 +1,30 @@
-using HADotNet.Core;
-using HADotNet.Core.Clients;
-using NUnit.Framework;
 using System;
 using System.Threading.Tasks;
+using HADotNet.Core.Clients;
+using HADotNet.Core.Tests.Infrastructure;
+using NUnit.Framework;
 
 namespace HADotNet.Core.Tests
 {
     public class LogbookTests
     {
-        private Uri Instance { get; set; }
-        private string ApiKey { get; set; }
+        private LogbookClient Client { get; set; }
 
-        [SetUp]
+        [OneTimeSetUp]
         public void Setup()
         {
-            Instance = new Uri(Environment.GetEnvironmentVariable("HADotNet:Tests:Instance"));
-            ApiKey = Environment.GetEnvironmentVariable("HADotNet:Tests:ApiKey");
+            var instance = new Uri(Environment.GetEnvironmentVariable("HADotNet:Tests:Instance"));
+            var apiKey = Environment.GetEnvironmentVariable("HADotNet:Tests:ApiKey");
 
-            ClientFactory.Initialize(Instance, ApiKey);
+            ClientFactory.Initialize(instance, apiKey, DefaultHttpClientFactory.GetInstance());
+
+            Client = ClientFactory.GetClient<LogbookClient>();
         }
 
         [Test]
         public async Task ShouldRetrieveAllLogbookEntries()
         {
-            var client = ClientFactory.GetClient<LogbookClient>();
-
-            var logEntries = await client.GetLogbookEntries();
+            var logEntries = await Client.GetLogbookEntries();
 
             Assert.IsNotNull(logEntries);
             Assert.IsNotEmpty(logEntries[0].EntityId);
@@ -36,9 +35,7 @@ namespace HADotNet.Core.Tests
         [Test]
         public async Task ShouldRetrieveLogbookEntriesByEntityId()
         {
-            var client = ClientFactory.GetClient<LogbookClient>();
-
-            var history = await client.GetLogbookEntries("light.jakes_office");
+            var history = await Client.GetLogbookEntries("light.jakes_office");
 
             Assert.IsNotNull(history);
             Assert.IsNotEmpty(history.EntityId);
@@ -47,9 +44,7 @@ namespace HADotNet.Core.Tests
         [Test]
         public async Task ShouldRetrieveLogbookEntriesByStartDate()
         {
-            var client = ClientFactory.GetClient<LogbookClient>();
-
-            var logEntries = await client.GetLogbookEntries(DateTimeOffset.Now.Subtract(TimeSpan.FromDays(2)));
+            var logEntries = await Client.GetLogbookEntries(DateTimeOffset.Now.Subtract(TimeSpan.FromDays(2)));
 
             Assert.IsNotNull(logEntries);
             Assert.IsNotEmpty(logEntries[0].EntityId);
@@ -60,9 +55,7 @@ namespace HADotNet.Core.Tests
         [Test]
         public async Task ShouldRetrieveLogbookEntriesByStartAndEndDate()
         {
-            var client = ClientFactory.GetClient<LogbookClient>();
-
-            var logEntries = await client.GetLogbookEntries(DateTimeOffset.Now.Subtract(TimeSpan.FromDays(2)), DateTimeOffset.Now.Subtract(new TimeSpan(1, 12, 0, 0)));
+            var logEntries = await Client.GetLogbookEntries(DateTimeOffset.Now.Subtract(TimeSpan.FromDays(2)), DateTimeOffset.Now.Subtract(new TimeSpan(1, 12, 0, 0)));
 
             Assert.IsNotNull(logEntries);
             Assert.IsNotEmpty(logEntries[0].EntityId);
@@ -73,9 +66,7 @@ namespace HADotNet.Core.Tests
         [Test]
         public async Task ShouldRetrieveLogbookEntriesByStartDateAndDuration()
         {
-            var client = ClientFactory.GetClient<LogbookClient>();
-
-            var logEntries = await client.GetLogbookEntries(DateTimeOffset.Now.Subtract(TimeSpan.FromDays(2)), TimeSpan.FromHours(18));
+            var logEntries = await Client.GetLogbookEntries(DateTimeOffset.Now.Subtract(TimeSpan.FromDays(2)), TimeSpan.FromHours(18));
 
             Assert.IsNotNull(logEntries);
             Assert.IsNotEmpty(logEntries[0].EntityId);
@@ -86,9 +77,7 @@ namespace HADotNet.Core.Tests
         [Test]
         public async Task ShouldRetrieveLogbookEntriesByStartAndEndDateAndEntityId()
         {
-            var client = ClientFactory.GetClient<LogbookClient>();
-
-            var history = await client.GetLogbookEntries("group.family_room_lights", DateTimeOffset.Now.Subtract(TimeSpan.FromDays(2)), DateTimeOffset.Now.Subtract(new TimeSpan(1, 12, 0, 0)));
+            var history = await Client.GetLogbookEntries("group.family_room_lights", DateTimeOffset.Now.Subtract(TimeSpan.FromDays(2)), DateTimeOffset.Now.Subtract(new TimeSpan(1, 12, 0, 0)));
 
             Assert.IsNotNull(history);
             Assert.IsNotEmpty(history.EntityId);

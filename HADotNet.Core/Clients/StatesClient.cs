@@ -1,6 +1,7 @@
 ﻿using HADotNet.Core.Models;
 using System;
 using System.Collections.Generic;
+using System.Net.Http;
 using System.Threading.Tasks;
 
 namespace HADotNet.Core.Clients
@@ -15,7 +16,8 @@ namespace HADotNet.Core.Clients
         /// </summary>
         /// <param name="instance">The Home Assistant base instance URL.</param>
         /// <param name="apiKey">The Home Assistant long-lived access token.</param>
-        public StatesClient(Uri instance, string apiKey) : base(instance, apiKey) { }
+        /// <param name="httpClient">The Http client.</param>
+        public StatesClient(Uri instance, string apiKey, HttpClient httpClient) : base(instance, apiKey, httpClient) { }
 
         /// <summary>
         /// Retrieves a list of current entities and their states.

@@ -1,9 +1,10 @@
-﻿using HADotNet.Core.Clients;
-using HADotNet.Core.Models;
-using NUnit.Framework;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using HADotNet.Core.Clients;
+using HADotNet.Core.Models;
+using HADotNet.Core.Tests.Infrastructure;
+using NUnit.Framework;
 
 namespace HADotNet.Core.Tests
 {
@@ -12,8 +13,7 @@ namespace HADotNet.Core.Tests
     /// </summary>
     public class AutomationTests
     {
-        private Uri Instance { get; set; }
-        private string ApiKey { get; set; }
+        private AutomationClient Client;
         private string AutomationId { get; set; }
 
         [OneTimeSetUp]
@@ -21,12 +21,12 @@ namespace HADotNet.Core.Tests
         {
             // arrange
             AutomationId = Guid.NewGuid().ToString();
-            Instance = new Uri(Environment.GetEnvironmentVariable("HADotNet:Tests:Instance"));
-            ApiKey = Environment.GetEnvironmentVariable("HADotNet:Tests:ApiKey");
+            var instance = new Uri(Environment.GetEnvironmentVariable("HADotNet:Tests:Instance"));
+            var apiKey = Environment.GetEnvironmentVariable("HADotNet:Tests:ApiKey");
 
-            ClientFactory.Initialize(Instance, ApiKey);
+            ClientFactory.Initialize(instance, apiKey, DefaultHttpClientFactory.GetInstance());
 
-            var client = ClientFactory.GetClient<AutomationClient>();
+            Client = ClientFactory.GetClient<AutomationClient>();
 
             var automation = new AutomationObject
             {
@@ -44,7 +44,7 @@ namespace HADotNet.Core.Tests
             };
 
             // act
-            var result = await client.Create(automation);
+            var result = await Client.Create(automation);
             
             // assert
             Assert.IsNotNull(result);
@@ -54,11 +54,8 @@ namespace HADotNet.Core.Tests
         [OneTimeTearDown]
         public async Task OneTimeTearDown()
         {
-            // arrange
-            var client = ClientFactory.GetClient<AutomationClient>();
-
             // act
-            var result = await client.Delete(AutomationId);
+            var result = await Client.Delete(AutomationId);
 
             // assert
             Assert.IsNotNull(result);
@@ -68,11 +65,8 @@ namespace HADotNet.Core.Tests
         [Test]
         public async Task ShouldRetrieveAutomationById()
         {
-            // arrange
-            var client = ClientFactory.GetClient<AutomationClient>();
-
             // act
-            var automation = await client.Get(AutomationId);
+            var automation = await Client.Get(AutomationId);
 
             // assert
             Assert.IsNotNull(automation);
@@ -97,10 +91,8 @@ namespace HADotNet.Core.Tests
                 }
             };
 
-            var client = ClientFactory.GetClient<AutomationClient>();
-
             // act
-            var result = await client.Update(automation);
+            var result = await Client.Update(automation);
 
             // assert
             Assert.IsNotNull(result);

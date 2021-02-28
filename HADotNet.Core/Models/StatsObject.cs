@@ -47,12 +47,12 @@ namespace HADotNet.Core.Models
         /// Gets or sets the network rx.
         /// </summary>
         [JsonProperty("network_rx")]
-        public int NetworkRx { get; set; }
+        public long NetworkRx { get; set; }
 
         /// <summary>
         /// Gets or sets the network tx.
         /// </summary>
         [JsonProperty("network_tx")]
-        public int NetworkTx { get; set; }
+        public long NetworkTx { get; set; }
     }
 }

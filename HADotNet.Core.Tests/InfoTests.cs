@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using HADotNet.Core.Clients;
-using HADotNet.Core.Domain;
+using HADotNet.Core.Tests.Infrastructure;
 using NUnit.Framework;
 
 namespace HADotNet.Core.Tests
@@ -15,27 +15,26 @@ namespace HADotNet.Core.Tests
     /// </remarks>
     public class InfoTests
     {
-        private Uri Instance { get; set; }
-        private string ApiKey { get; set; }
+        private InfoClient Client;
 
-        [SetUp]
+        [OneTimeSetUp]
         public void Setup()
         {
-            Instance = new Uri(Environment.GetEnvironmentVariable("HADotNet:Tests:Instance"));
-            ApiKey = Environment.GetEnvironmentVariable("HADotNet:Tests:ApiKey");
+            var instance = new Uri(Environment.GetEnvironmentVariable("HADotNet:Tests:Instance"));
+            var apiKey = Environment.GetEnvironmentVariable("HADotNet:Tests:ApiKey");
 
-            ClientFactory.Initialize(Instance, ApiKey);
+            ClientFactory.Initialize(instance, apiKey, DefaultHttpClientFactory.GetInstance());
+
+            Client = ClientFactory.GetClient<InfoClient>();
         }
 
         [Test]
         public async Task ShouldRetrieveSupervisorInfo()
         {
-            var client = ClientFactory.GetClient<InfoClient>();
-
 #if TEST_ENV_HA_CORE
             Assert.ThrowsAsync<SupervisorNotFoundException>(async () => await client.GetSupervisorInfo());
 #else
-            var info = await client.GetSupervisorInfo();
+            var info = await Client.GetSupervisorInfo();
 
             Assert.AreEqual("ok", info.Result);
             Assert.IsNotNull(info.Data);
@@ -46,12 +45,10 @@ namespace HADotNet.Core.Tests
         [Test]
         public async Task ShouldRetrieveHostInfo()
         {
-            var client = ClientFactory.GetClient<InfoClient>();
-
 #if TEST_ENV_HA_CORE
             Assert.ThrowsAsync<SupervisorNotFoundException>(async () => await client.GetHostInfo());
 #else
-            var info = await client.GetHostInfo();
+            var info = await Client.GetHostInfo();
 
             Assert.AreEqual("ok", info.Result);
             Assert.IsNotNull(info.Data);
@@ -62,12 +59,10 @@ namespace HADotNet.Core.Tests
         [Test]
         public async Task ShouldRetrieveCoreInfo()
         {
-            var client = ClientFactory.GetClient<InfoClient>();
-
 #if TEST_ENV_HA_CORE
             Assert.ThrowsAsync<SupervisorNotFoundException>(async () => await client.GetCoreInfo());
 #else
-            var info = await client.GetCoreInfo();
+            var info = await Client.GetCoreInfo();
 
             Assert.AreEqual("ok", info.Result);
             Assert.IsNotNull(info.Data);
