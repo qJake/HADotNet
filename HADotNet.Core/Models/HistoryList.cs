@@ -17,12 +17,12 @@ namespace HADotNet.Core.Models
         /// <summary>
         /// Gets the earliest point in time represented by this history list.
         /// </summary>
-        public DateTimeOffset DateFrom => this.Any() ? this.OrderBy(s => s.LastUpdated).First().LastUpdated : DateTimeOffset.MinValue;
+        public DateTimeOffset DateFrom => Count > 0 ? this.OrderBy(s => s.LastUpdated).First().LastUpdated : DateTimeOffset.MinValue;
 
         /// <summary>
         /// Gets the most recent point in time represented by this history list.
         /// </summary>
-        public DateTimeOffset DateTo => this.Any() ? this.OrderByDescending(s => s.LastUpdated).First().LastUpdated : DateTimeOffset.MaxValue;
+        public DateTimeOffset DateTo => Count > 0 ? this.OrderByDescending(s => s.LastUpdated).First().LastUpdated : DateTimeOffset.MaxValue;
 
         /// <summary>
         /// Gets a string representation of this object.
