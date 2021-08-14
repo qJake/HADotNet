@@ -19,6 +19,8 @@ A simple, straighforward .NET Standard library for the [Home Assistant](https://
 * Automation API
 * Google Calendar API (*Unofficial*)
 * Discovery API
+* Config API
+* Camera Proxy API
 * Entity API
 * Error Log API
 * Events API
@@ -56,6 +58,43 @@ long-lived access token that you created on your profile page.
 
 ```csharp
 ClientFactory.Initialize("https://my-home-assistant-url/", "AbCdEf0123456789...");
+```
+
+### Integrating into an ASP.NET Core Site
+
+First, call `ClientFactory.Initialize(...);` to ensure that your Home Assistant
+instance is connected. You can do this in `ConfigureServices`, or using middleware.
+
+Just be sure that the client factory has been initialized **before** any page/controller
+requests are made.
+
+You can add individual clients to the DI container like so:
+
+```csharp
+services.AddScoped(_ => ClientFactory.GetClient<EntityClient>());
+services.AddScoped(_ => ClientFactory.GetClient<StatesClient>());
+services.AddScoped(_ => ClientFactory.GetClient<ServiceClient>());
+services.AddScoped(_ => ClientFactory.GetClient<DiscoveryClient>());
+```
+
+Since there are no interfaces, simply add the instance(s) directly into the container.
+Add as few or as many clients as you need, and then simply retrieve each client via the
+DI container as-needed.
+
+```csharp
+public class MyController : Controller
+{
+	private IOtherService SampleService { get; }
+	private EntityClient EntityClient { get; }
+
+	public MyController(IOtherService sampleService, EntityClient entityClient)
+	{
+		SampleService = sampleService;
+		EntityClient = entityClient;
+	}
+
+	// ...
+}
 ```
 
 ### Getting Home Assistant's Current Configuration
@@ -165,6 +204,17 @@ var templateClient = ClientFactory.GetClient<TemplateClient>();
 var myRenderedTemplate = await templateClient.RenderTemplate("The sun is {{ states('sun.sun') }}");
 
 // myRenderedTemplate: The sun is above_horizon
+```
+
+### Retrieving a Camera Image
+
+Get a `CameraProxyClient` and then call `GetCameraImage`, or for a ready-to-go HTML Base64 string, `GetCameraImageAsBase64`:
+
+```csharp
+var cameraClient = ClientFactory.GetClient<CameraProxyClient>();
+var myCameraImage = await cameraClient.GetCameraImageAsBase64("camera.my_camera");
+
+// myCameraImage: "data:image/jpg;base64,AAAAAAAAA..."
 ```
 
 ## Testing
