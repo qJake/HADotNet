@@ -47,10 +47,10 @@ namespace HADotNet.Core.Tests
         {
             var client = ClientFactory.GetClient<StatesClient>();
 
-            var state = await client.GetState("sun.sun");
+            var state = await client.GetState("climate.thermostat");
 
             Assert.IsNotNull(state);
-            Assert.AreEqual("Sun", state.GetAttributeValue<string>("friendly_name"));
+            Assert.AreEqual("heat_cool", state.GetAttributeValue<string[]>("hvac_modes")[0]);
         }
 
         [Test]

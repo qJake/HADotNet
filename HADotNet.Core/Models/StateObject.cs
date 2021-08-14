@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 
@@ -49,7 +50,20 @@ namespace HADotNet.Core.Models
         /// <typeparam name="T">The desired type to cast the attribute value to.</typeparam>
         /// <param name="name">The name of the attribute to retrieve the value for.</param>
         /// <returns>The attribute's current value, cast to type <typeparamref name="T" />.</returns>
-        public T GetAttributeValue<T>(string name) => !Attributes.ContainsKey(name) ? default : (T)Attributes[name];
+        public T GetAttributeValue<T>(string name)
+        {
+            if (!Attributes.ContainsKey(name))
+            {
+                return default;
+            }
+            
+            if (typeof(JToken).IsAssignableFrom(Attributes[name].GetType()))
+            {
+                return ((JToken)Attributes[name]).ToObject<T>();
+            }
+
+            return (T)Attributes[name];
+        }
 
         /// <summary>
         /// Gets a string representation of this entity's state.
