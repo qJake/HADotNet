@@ -31,5 +31,18 @@ namespace HADotNet.Core.Tests
             Assert.AreNotEqual(0, config.Components.Count);
 
         }
+
+        [Test]
+        public async Task ShouldCheckConfig()
+        {
+            var client = ClientFactory.GetClient<ConfigClient>();
+
+            var config = await client.CheckConfiguration();
+
+            Assert.IsNotNull(config);
+            Assert.IsNotNull(config.Result);
+            Assert.AreEqual("valid", config.Result);
+
+        }
     }
 }

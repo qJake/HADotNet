@@ -1,4 +1,4 @@
-﻿using System;
+﻿using System.Net.Http;
 using System.Threading.Tasks;
 using HADotNet.Core.Domain;
 using HADotNet.Core.Models;
@@ -13,9 +13,8 @@ namespace HADotNet.Core.Clients
         /// <summary>
         /// Initializes a new instance of the <see cref="InfoClient" />.
         /// </summary>
-        /// <param name="instance">The Home Assistant base instance URL.</param>
-        /// <param name="apiKey">The Home Assistant long-lived access token.</param>
-        public InfoClient(Uri instance, string apiKey) : base(instance, apiKey) { }
+        /// <param name="client">The <see cref="HttpClient" /> preconfigured to communicate with a Home Assistant instance.</param>
+        public InfoClient(HttpClient client) : base(client) { }
 
         /// <summary>
         /// Retrieves Supervisor information.

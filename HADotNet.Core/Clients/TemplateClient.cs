@@ -1,7 +1,4 @@
-﻿using HADotNet.Core.Models;
-using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
+﻿using System.Net.Http;
 using System.Threading.Tasks;
 
 namespace HADotNet.Core.Clients
@@ -14,9 +11,8 @@ namespace HADotNet.Core.Clients
         /// <summary>
         /// Initializes a new instance of the <see cref="TemplateClient" />.
         /// </summary>
-        /// <param name="instance">The Home Assistant base instance URL.</param>
-        /// <param name="apiKey">The Home Assistant long-lived access token.</param>
-        public TemplateClient(Uri instance, string apiKey) : base(instance, apiKey) { }
+        /// <param name="client">The <see cref="HttpClient" /> preconfigured to communicate with a Home Assistant instance.</param>
+        public TemplateClient(HttpClient client) : base(client) { }
 
         /// <summary>
         /// Renders a template and returns the resulting output as a string.

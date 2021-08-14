@@ -1,8 +1,9 @@
-﻿using HADotNet.Core.Models;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Threading.Tasks;
+using HADotNet.Core.Models;
 
 namespace HADotNet.Core.Clients
 {
@@ -14,9 +15,8 @@ namespace HADotNet.Core.Clients
         /// <summary>
         /// Initializes a new instance of the <see cref="LogbookClient" />.
         /// </summary>
-        /// <param name="instance">The Home Assistant base instance URL.</param>
-        /// <param name="apiKey">The Home Assistant long-lived access token.</param>
-        public LogbookClient(Uri instance, string apiKey) : base(instance, apiKey) { }
+        /// <param name="client">The <see cref="HttpClient" /> preconfigured to communicate with a Home Assistant instance.</param>
+        public LogbookClient(HttpClient client) : base(client) { }
 
         /// <summary>
         /// Retrieves a list of ALL logbook states for all entities for the past 1 day.

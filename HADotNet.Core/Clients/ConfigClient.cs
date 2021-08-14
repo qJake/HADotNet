@@ -1,6 +1,6 @@
-﻿using HADotNet.Core.Models;
-using System;
+﻿using System.Net.Http;
 using System.Threading.Tasks;
+using HADotNet.Core.Models;
 
 namespace HADotNet.Core.Clients
 {
@@ -12,14 +12,19 @@ namespace HADotNet.Core.Clients
         /// <summary>
         /// Initializes a new instance of the <see cref="ConfigClient" />.
         /// </summary>
-        /// <param name="instance">The Home Assistant base instance URL.</param>
-        /// <param name="apiKey">The Home Assistant long-lived access token.</param>
-        public ConfigClient(Uri instance, string apiKey) : base(instance, apiKey) { }
+        /// <param name="client">The <see cref="HttpClient" /> preconfigured to communicate with a Home Assistant instance.</param>
+        public ConfigClient(HttpClient client) : base(client) { }
 
         /// <summary>
         /// Retrieves the current Home Assistant configuration object.
         /// </summary>
         /// <returns>A <see cref="ConfigurationObject" /> representing the current Home Assistant configuration.</returns>
         public async Task<ConfigurationObject> GetConfiguration() => await Get<ConfigurationObject>("/api/config");
+
+        /// <summary>
+        /// Performs a configuration check and returns the result.
+        /// </summary>
+        /// <returns>A <see cref="ConfigurationCheckResultObject" /> containing the results of the check, and any errors that occurred.</returns>
+        public async Task<ConfigurationCheckResultObject> CheckConfiguration() => await Post<ConfigurationCheckResultObject>("/api/config/core/check_config", null);
     }
 }

@@ -1,7 +1,6 @@
-﻿using System;
+﻿using System.Net.Http;
 using System.Threading.Tasks;
 using HADotNet.Core.Models;
-using Newtonsoft.Json;
 
 namespace HADotNet.Core.Clients
 {
@@ -13,9 +12,8 @@ namespace HADotNet.Core.Clients
         /// <summary>
         /// Initializes a new instance of the <see cref="AutomationClient" />.
         /// </summary>
-        /// <param name="instance">The Home Assistant base instance URL.</param>
-        /// <param name="apiKey">The Home Assistant long-lived access token.</param>
-        public AutomationClient(Uri instance, string apiKey) : base(instance, apiKey) { }
+        /// <param name="client">The <see cref="HttpClient" /> preconfigured to communicate with a Home Assistant instance.</param>
+        public AutomationClient(HttpClient client) : base(client) { }
 
         /// <summary>
         /// Create the <see cref="AutomationObject"/>.

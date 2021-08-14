@@ -1,6 +1,6 @@
-﻿using HADotNet.Core.Models;
-using System;
+﻿using System.Net.Http;
 using System.Threading.Tasks;
+using HADotNet.Core.Models;
 
 namespace HADotNet.Core.Clients
 {
@@ -12,9 +12,8 @@ namespace HADotNet.Core.Clients
         /// <summary>
         /// Initializes a new instance of the <see cref="RootApiClient" />.
         /// </summary>
-        /// <param name="instance">The Home Assistant base instance URL.</param>
-        /// <param name="apiKey">The Home Assistant long-lived access token.</param>
-        public RootApiClient(Uri instance, string apiKey) : base(instance, apiKey) { }
+        /// <param name="client">The <see cref="HttpClient" /> preconfigured to communicate with a Home Assistant instance.</param>
+        public RootApiClient(HttpClient client) : base(client) { }
 
         /// <summary>
         /// Retrieves the API status message for the Home Assistant instance, to ensure it is running.
