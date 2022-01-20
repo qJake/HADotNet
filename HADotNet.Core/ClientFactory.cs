@@ -43,10 +43,43 @@ namespace HADotNet.Core
 
         /// <summary>
         /// Initializes the client factory with the specified <paramref name="instanceAddress" /> and <paramref name="apiKey" /> which are forwarded to clients instantiated from this factory.
+        /// <para>Allows specifying the <paramref name="handler" /> to allow further configuring.</para>
+        /// </summary>
+        /// <param name="instanceAddress"></param>
+        /// <param name="apiKey"></param>
+        /// <param name="handler"></param>
+        public static void Initialize(Uri instanceAddress, string apiKey, HttpClientHandler handler)
+        {
+            Client = new HttpClient(handler)
+            {
+                BaseAddress = instanceAddress,
+                DefaultRequestHeaders =
+                {
+                    Authorization = new AuthenticationHeaderValue("Bearer", apiKey),
+                    AcceptEncoding =
+                    {
+                        new StringWithQualityHeaderValue("identity")
+                    }
+                }
+            };
+            IsInitialized = true;
+        }
+
+        /// <summary>
+        /// Initializes the client factory with the specified <paramref name="instanceAddress" /> and <paramref name="apiKey" /> which are forwarded to clients instantiated from this factory.
         /// </summary>
         /// <param name="instanceAddress">The Home Assistant base instance address (do not include /api/).</param>
         /// <param name="apiKey">The Home Assistant long-lived access token.</param>
         public static void Initialize(string instanceAddress, string apiKey) => Initialize(new Uri(instanceAddress), apiKey);
+
+        /// <summary>
+        /// Initializes the client factory with the specified <paramref name="instanceAddress" /> and <paramref name="apiKey" /> which are forwarded to clients instantiated from this factory.
+        /// <para>Allows specifying the <paramref name="handler" /> to allow further configuring.</para>
+        /// </summary>
+        /// <param name="instanceAddress"></param>
+        /// <param name="apiKey"></param>
+        /// <param name="handler"></param>
+        public static void Initialize(string instanceAddress, string apiKey, HttpClientHandler handler) => Initialize(new Uri(instanceAddress), apiKey, handler);
 
         /// <summary>
         /// Resets the Client Factory to its initial state (not initialized).
@@ -72,5 +105,6 @@ namespace HADotNet.Core
         /// <exception cref="Exception">Thrown if this <see cref="ClientFactory" /> is not initialized (call <see cref="Initialize(Uri, string)" /> first).</exception>
         /// <returns>A new instance of the specified <typeparamref name="TClient" /> type.</returns>
         public static TClient GetClient<TClient>() where TClient : BaseClient => (TClient)Activator.CreateInstance(typeof(TClient), Client);
+
     }
 }
